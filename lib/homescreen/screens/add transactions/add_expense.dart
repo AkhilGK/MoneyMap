@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
+import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
 import 'package:moneymap/homescreen/screens/add_categories/db_categories/categories_db_functions.dart';
 
 import '../add_categories/categories_list.dart';
+import 'db_transactions/transaction_model.dart';
 
 class AddExpense extends StatefulWidget {
   AddExpense({super.key});
@@ -16,8 +18,11 @@ class AddExpense extends StatefulWidget {
 class _AddExpenseState extends State<AddExpense> {
   TextEditingController dateinput = TextEditingController();
   String _selectedCategory = "";
-  List<String> dropdownExpitems =
-      dropDownExpenseCategories.value.map((data) => data.catName).toList();
+  DateTime dateSelected = DateTime.now();
+  TextEditingController amountController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  // List<String> dropdownExpitems =
+  //     dropDownExpenseCategories.value.map((data) => data.catName).toList();
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -36,7 +41,7 @@ class _AddExpenseState extends State<AddExpense> {
               ),
               sboxex(h: 15),
               TextFormField(
-                // controller: _nameOfStudent,
+                controller: amountController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -53,7 +58,7 @@ class _AddExpenseState extends State<AddExpense> {
               ),
               sboxex(h: 15),
               TextFormField(
-                // controller: _nameOfStudent,
+                controller: nameController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: ' Expense Name',
@@ -61,7 +66,7 @@ class _AddExpenseState extends State<AddExpense> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return ' Amount is Required';
+                    return ' Name is Required';
                   } else {
                     return null;
                   }
@@ -86,7 +91,7 @@ class _AddExpenseState extends State<AddExpense> {
                     onChanged: (newvalue) {
                       setState(() {
                         _selectedCategory =
-                            newvalue.toString(); //on the income page
+                            newvalue!.catName; //on the income page
                       });
                     },
                     validator: (value) {
@@ -133,7 +138,8 @@ class _AddExpenseState extends State<AddExpense> {
                           2000), //DateTime.now() - not to allow to choose before today.
                       lastDate: DateTime(2101));
                   if (pickedDate != null) {
-                    print(pickedDate.month);
+                    dateSelected = pickedDate;
+                    // print(pickedDate.month);
                   }
 
                   if (pickedDate != null) {
@@ -172,7 +178,15 @@ class _AddExpenseState extends State<AddExpense> {
                     ),
                   ),
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {}
+                    if (_formKey.currentState!.validate()) {
+                      TransactionModel value = TransactionModel(
+                          isIncome: false,
+                          amount: double.parse(amountController.text),
+                          name: nameController.text,
+                          categoryName: _selectedCategory,
+                          date: dateSelected);
+                      insertTransactions(value);
+                    }
                   },
                   child: const Text("Add Expense"))
             ],

@@ -171,29 +171,36 @@ class FirstScreenWidget {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: recentCount(),
           itemBuilder: (context, index) {
+            TransactionModel value = newList[index];
             return Card(
               elevation: 1,
               child: ListTile(
-                onLongPress: () => deleteTransaction(newList[index].id),
+                onLongPress: () => deleteTransaction(value.id!),
                 onTap: () {
                   Navigator.of(ctx).push(MaterialPageRoute(
                     builder: (context) {
-                      return const EditAndDeleteScreen();
+                      return EditAndDeleteScreen(
+                          amount: value.amount,
+                          name: value.name,
+                          category: value.categoryName,
+                          date: value.date);
                     },
                   ));
                 },
-                leading: const CircleAvatar(
-                  child: Icon(Icons.man),
-                  backgroundColor: Colors.purple,
+                leading: CircleAvatar(
+                  child: iconFunction(value.isIncome),
+                  backgroundColor: Color.fromRGBO(186, 95, 202, 1),
                 ),
-                title: Text(newList[index].name.toString(),
+                title: Text(value.name.toString(),
                     style: TextStyle(color: Colors.black87, fontSize: 18)),
-                subtitle: Text(newList[index].categoryName.toString(),
+                subtitle: Text(value.categoryName.toString(),
                     style: const TextStyle(
                         color: Color.fromARGB(255, 88, 17, 17), fontSize: 15)),
                 trailing: Text(
-                  '₹${newList[index].amount}',
-                  style: TextStyle(color: Colors.red, fontSize: 20),
+                  '₹${value.amount}',
+                  style: TextStyle(
+                      color: value.isIncome ? Colors.green : Colors.red,
+                      fontSize: 20),
                 ),
               ),
             );
@@ -231,4 +238,18 @@ class FirstScreenWidget {
       height: 10,
     );
   }
+
+  Icon iconFunction(bool val) {
+    return val
+        ? Icon(
+            Icons.money,
+            color: Colors.green,
+          )
+        : Icon(
+            Icons.shopping_cart,
+            color: Colors.red,
+          );
+  }
+
+  // Text textTitle(TransactionModel val) {return val.isIncome? Text('₹${val.amount}',):Text()}
 }

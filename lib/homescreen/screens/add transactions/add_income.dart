@@ -17,12 +17,12 @@ class AddIncome extends StatefulWidget {
 class _AddIncomeState extends State<AddIncome> {
   String _selectedCategory = "";
   TextEditingController dateinput = TextEditingController();
-  late DateTime dateSelected;
+  DateTime dateSelected = DateTime.now();
   TextEditingController amountController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   // TextEditingController categoryController = TextEditingController();
-  List<String> dropdownitems =
-      dropDownIncomeCategories.value.map((data) => data.catName).toList();
+  // List<String> dropdownitems =
+  //     dropDownIncomeCategories.value.map((data) => data.catName).toList();
   final _formKey = GlobalKey<FormState>(); //for form validation
   @override
   Widget build(BuildContext context) {
@@ -155,7 +155,7 @@ class _AddIncomeState extends State<AddIncome> {
                     print(
                         pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
                     dateSelected = pickedDate;
-                    print(dateSelected.toString());
+                    // print(dateSelected.toString());
                     String formattedDate =
                         DateFormat('dd-MM-yyyy').format(pickedDate);
                     // print(
@@ -189,9 +189,10 @@ class _AddIncomeState extends State<AddIncome> {
                     ),
                   ),
                   onPressed: () {
+                    print(DateTime.now());
                     if (_formKey.currentState!.validate()) {
                       TransactionModel value = TransactionModel(
-                        id: DateTime.now().toString(),
+                        isIncome: true, //truebecouse it is income
                         amount: double.parse(amountController.text),
                         name: nameController.text,
                         categoryName: _selectedCategory,

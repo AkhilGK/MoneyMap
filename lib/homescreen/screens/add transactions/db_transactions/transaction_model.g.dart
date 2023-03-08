@@ -17,20 +17,20 @@ class TransactionModelAdapter extends TypeAdapter<TransactionModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TransactionModel(
-      id: fields[0] as String,
+      isIncome: fields[0] as bool,
       amount: fields[4] as double,
       name: fields[1] as String,
       categoryName: fields[2] as String,
       date: fields[3] as DateTime,
-    );
+    )..id = fields[5] as String?;
   }
 
   @override
   void write(BinaryWriter writer, TransactionModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
-      ..write(obj.id)
+      ..write(obj.isIncome)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
@@ -38,7 +38,9 @@ class TransactionModelAdapter extends TypeAdapter<TransactionModel> {
       ..writeByte(3)
       ..write(obj.date)
       ..writeByte(4)
-      ..write(obj.amount);
+      ..write(obj.amount)
+      ..writeByte(5)
+      ..write(obj.id);
   }
 
   @override

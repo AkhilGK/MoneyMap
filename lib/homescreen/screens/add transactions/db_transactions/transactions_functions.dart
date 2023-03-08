@@ -8,7 +8,7 @@ ValueNotifier<List<TransactionModel>> transactionNotifier = ValueNotifier([]);
 
 Future<void> insertTransactions(TransactionModel transaction) async {
   final transactionDb = await Hive.openBox<TransactionModel>('transaction_db');
-  await transactionDb.add(transaction);
+  await transactionDb.put(transaction.id, transaction);
   alertUi();
 }
 

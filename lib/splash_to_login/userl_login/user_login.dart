@@ -18,98 +18,90 @@ class UserLogin extends StatelessWidget {
             // crossAxisAlignment: CrossAxisAlignment.center,
             // mainAxisSize: MainAxisSize.max,
             children: [
-              Expanded(
-                flex: 2,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'Assets/images/moneyMapLogo.png',
-                      height: 80,
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                  flex: 4, child: Image.asset('Assets/images/LoginImg.png')),
-              Expanded(
-                  child: Row(
-                //name row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    " Your name",
-                    style: GoogleFonts.dmSans(
-                        fontSize: 20,
-                        color: Colors.purple,
-                        fontWeight: FontWeight.bold),
+                  Image.asset(
+                    'Assets/images/moneyMapLogo.png',
+                    height: 80,
                   ),
                 ],
-              )),
-              Expanded(
-                  child: TextFormField(
+              ),
+              Image.asset('Assets/images/LoginImg.png'),
+              Row(  
+                //name row
+                children: [
+              Text(
+                " Your name",
+                style: GoogleFonts.dmSans(
+                    fontSize: 20,
+                    color: Colors.purple,
+                    fontWeight: FontWeight.bold),
+              ),
+                ],
+              ),
+              TextFormField(
                 controller: userName,
                 decoration: const InputDecoration(
-                  hintText: 'Enter your name',
-                  border: OutlineInputBorder(),
+              hintText: 'Enter your name',
+              border: OutlineInputBorder(),
                 ),
-              )),
+              ),
               SizedBox(
                 height: 8,
               ),
-              Expanded(
-                  flex: 2,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      const SizedBox(
-                        width: 20,
-                      ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const SizedBox(
+                    width: 20,
+                  ),
 
-                      //to skip name adding option
-                      ElevatedButton(
-                          onPressed: () {
-                            loginSkipped = true;
-                            Hive.box('onboarding_check')
-                                .put('LoginSkipped', loginSkipped);
-                            Hive.box('onboarding_check').put('userName',
-                                'User'); //added user name to data base
-                            Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen()),
-                              (Route<dynamic> route) => false,
-                            );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: G().textOfMap(
-                                text: "Skip", size: 18, color: Colors.white),
-                          )),
+                  //to skip name adding option
+                  ElevatedButton(
+                      onPressed: () {
+                        loginSkipped = true;
+                        Hive.box('onboarding_check')
+                            .put('LoginSkipped', loginSkipped);
+                        Hive.box('onboarding_check').put('userName',
+                            'User'); //added user name to data base
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => HomeScreen()),
+                          (Route<dynamic> route) => false,
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: G().textOfMap(
+                            text: "Skip", size: 18, color: Colors.white),
+                      )),
 
-                      //to save name adding option
+                  //to save name adding option
 
-                      ElevatedButton(
-                          onPressed: () {
-                            loginSkipped = true;
-                            if (userName.text == '') {
-                              userName.text = 'User';
-                            }
-                            Hive.box('onboarding_check').put('userName',
-                                userName.text); //added user name to data base
-                            Hive.box('onboarding_check').put('LoginSkipped',
-                                loginSkipped); //confirm the page wont appear again at restart
-                            Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen()),
-                              (Route<dynamic> route) => false,
-                            );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: G().textOfMap(
-                                text: "Save", size: 18, color: Colors.white),
-                          )),
-                    ],
-                  ))
+                  ElevatedButton(
+                      onPressed: () {
+                        loginSkipped = true;
+                        if (userName.text == '') {
+                          userName.text = 'User';
+                        }
+                        Hive.box('onboarding_check').put('userName',
+                            userName.text); //added user name to data base
+                        Hive.box('onboarding_check').put('LoginSkipped',
+                            loginSkipped); //confirm the page wont appear again at restart
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => HomeScreen()),
+                          (Route<dynamic> route) => false,
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: G().textOfMap(
+                            text: "Save", size: 18, color: Colors.white),
+                      )),
+                ],
+              )
             ],
           ),
         ),
