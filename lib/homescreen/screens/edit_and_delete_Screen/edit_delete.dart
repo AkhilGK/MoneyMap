@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
+import 'package:moneymap/homescreen/home_screen.dart';
+import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transaction_model.dart';
+import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
+import 'package:moneymap/homescreen/screens/first_screen.dart';
 
+import '../add_categories/db_categories/categories_db_functions.dart';
+import '../add_categories/db_categories/categories_db_model.dart';
 import '../widgets/global_widgets.dart';
 
 class EditAndDeleteScreen extends StatefulWidget {
@@ -10,12 +16,16 @@ class EditAndDeleteScreen extends StatefulWidget {
   String name;
   String category;
   DateTime date;
+  bool isIncome;
+  String id;
   EditAndDeleteScreen(
       {super.key,
       required this.amount,
       required this.name,
       required this.category,
-      required this.date});
+      required this.date,
+      required this.isIncome,
+      required this.id});
 
   @override
   State<EditAndDeleteScreen> createState() => _EditAndDeleteScreenState();
@@ -25,7 +35,10 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
   TextEditingController amountcontroller = TextEditingController();
   TextEditingController namecontroller = TextEditingController();
   late String categorycontroller;
-  late DateTime datecontroller;
+  TextEditingController datecontroller = TextEditingController();
+  late String formattedDate;
+  late DateTime selectedDate;
+  late String id;
 
   final _formkey = GlobalKey<FormState>();
   @override
@@ -34,13 +47,16 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
     amountcontroller = TextEditingController(text: widget.amount.toString());
     namecontroller = TextEditingController(text: widget.name);
     categorycontroller = widget.category;
-    datecontroller = widget.date;
+    formattedDate = DateFormat('dd-MM-yyyy').format(widget.date);
+    datecontroller = TextEditingController(text: formattedDate);
+    id = widget.id;
+    selectedDate = widget.date;
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('  '),
+        title: Text(formattedDate),
       ),
       body: SafeArea(
           child: SingleChildScrollView(
@@ -78,26 +94,27 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
                 G().sBox(h: 15),
                 DropdownButtonFormField(
                   decoration: InputDecoration(
-                      label: Text("Category"),
-                      // hintText: "Select a category",
+                      label: Text(widget.category),
+                      hintText: widget.category,
                       border: OutlineInputBorder()),
-                  items: catagoryList,
-                  value: categorycontroller,
+                  items: categoryList(widget.isIncome),
+                  // value: categorycontroll,
                   onChanged: (newvalue) {
                     setState(() {
-                      categorycontroller = newvalue.toString();
+                      categorycontroller = newvalue!.catName;
                     });
                   },
                 ),
                 G().sBox(h: 15),
                 TextField(
-                  // controller:
-                  //     datecontroller, //editing controller of this TextField
-                  decoration: InputDecoration(
+                  controller:
+                      datecontroller, //editing controller of this TextField
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       icon: Icon(Icons.calendar_today), //icon of text field
                       labelText: "Enter Date" //label text of field
                       ),
+
                   readOnly:
                       true, //set it true, so that user will not able to edit text
                   onTap: () async {
@@ -111,6 +128,7 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
                     if (pickedDate != null) {
                       print(
                           pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                      selectedDate = pickedDate;
                       String formattedDate =
                           DateFormat('yyyy-MM-dd').format(pickedDate);
                       print(
@@ -118,8 +136,8 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
                       //you can implement different kind of Date Format here according to your requirement
 
                       setState(() {
-                        // dateinput.text =
-                        //     formattedDate; //set output date to TextField value.
+                        datecontroller.text =
+                            formattedDate; //set output date to TextField value.
                       });
                     } else {
                       print("Date is not selected");
@@ -148,9 +166,20 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
                               title: Text("Sure to delete"),
                               actions: [
                                 TextButton(
-                                    onPressed: () {}, child: Text('Delete')),
+                                    onPressed: () {
+                                      deleteTransaction(widget.id);
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                            builder: (context) => HomeScreen()),
+                                        (Route<dynamic> route) => false,
+                                      );
+                                    },
+                                    child: Text('Delete')),
                                 TextButton(
-                                    onPressed: () {}, child: Text('Back'))
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('Back'))
                               ],
                             ),
                           );
@@ -166,8 +195,32 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
                                 borderRadius: BorderRadius.circular(8.0)),
                           ),
                         ),
-                        onPressed: () {},
-                        child: Icon(Icons.check)),
+                        onPressed: () {
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          //is edited or not
+
+                          if (namecontroller.text == widget.name &&
+                              amountcontroller.text ==
+                                  widget.amount.toString() &&
+                              categorycontroller == widget.category) {
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()),
+                              (Route<dynamic> route) => false,
+                            );
+                          } else {
+                            TransactionModel value = TransactionModel(
+                                isIncome: widget.isIncome,
+                                amount: double.parse(amountcontroller.text),
+                                name: namecontroller.text,
+                                categoryName: categorycontroller,
+                                date: selectedDate,
+                                id: id);
+                            insertTransactions(value);
+                          }
+                        },
+                        child: const Icon(Icons.check)),
                   ],
                 )
               ],
@@ -178,33 +231,24 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
     );
   } //dropdown items
 
-  List<DropdownMenuItem<dynamic>> catagoryList = [
-    DropdownMenuItem(
-      value: 'Salary ',
-      child: Text('Salary'),
-    ),
-    DropdownMenuItem(
-      value: 'part time income',
-      child: Text('Part time income'),
-    ),
-    DropdownMenuItem(
-      value: 'passive Income',
-      child: Text('Passive Income'),
-    ),
-    DropdownMenuItem(
-      value: 'investments Profit',
-      child: Text('Investments Profit'),
-    ),
-    DropdownMenuItem(
-      value: 'gifts',
-      child: Text('Gifts'),
-    ),
-    DropdownMenuItem(
-      value: 'others',
-      child: Text('Others'),
-    ),
-  ];
+  List<DropdownMenuItem<CategoryModel>> categoryList(bool val) {
+    return val
+        ? dropDownIncomeCategories.value
+            .map((cat) => DropdownMenuItem(
+                  value: cat,
+                  child: Center(child: Text(cat.catName)),
+                ))
+            .toList()
+        : dropDownExpenseCategories.value
+            .map((cat) => DropdownMenuItem(
+                  value: cat,
+                  child: Center(child: Text(cat.catName)),
+                ))
+            .toList();
+  }
 
-//to add alert box to delete
-
+  final snackBar = const SnackBar(
+    content: Text('Saved Changes!'),
+    backgroundColor: (Color.fromARGB(195, 223, 91, 212)),
+  );
 }

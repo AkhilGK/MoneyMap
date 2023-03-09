@@ -180,10 +180,13 @@ class FirstScreenWidget {
                   Navigator.of(ctx).push(MaterialPageRoute(
                     builder: (context) {
                       return EditAndDeleteScreen(
-                          amount: value.amount,
-                          name: value.name,
-                          category: value.categoryName,
-                          date: value.date);
+                        amount: value.amount,
+                        name: value.name,
+                        category: value.categoryName,
+                        date: value.date,
+                        isIncome: value.isIncome,
+                        id: value.id!,
+                      );
                     },
                   ));
                 },

@@ -15,13 +15,13 @@ class TransactionModel {
   final double amount;
   @HiveField(5)
   String? id;
-  TransactionModel({
-    required this.isIncome,
-    required this.amount,
-    required this.name,
-    required this.categoryName,
-    required this.date,
-  }) {
-    id = DateTime.now().microsecondsSinceEpoch.toString();
-  }
+  TransactionModel(
+      {required this.isIncome,
+      required this.amount,
+      required this.name,
+      required this.categoryName,
+      required this.date,
+      required this.id}); // {
+  //   id = DateTime.now().microsecondsSinceEpoch.toString();
+  // }
 }

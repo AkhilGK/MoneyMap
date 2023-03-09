@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:moneymap/homescreen/screens/add_categories/db_categories/categories_db_functions.dart';
 import 'package:moneymap/homescreen/screens/widgets/first_screen_widgets.dart';
+import 'package:moneymap/homescreen/screens/widgets/flipcard.dart';
 import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
 import 'package:path/path.dart';
 import 'add transactions/add_transaction.dart';
@@ -47,7 +48,7 @@ class _FirstScreenState extends State<FirstScreen> {
               ),
               sbox(),
               sbox(),
-              FirstScreenWidget().flipCard(),
+              FirstFlipCard(),
               addButton(context),
               Row(
                 children: [

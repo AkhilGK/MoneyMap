@@ -158,6 +158,7 @@ class _AddIncomeState extends State<AddIncome> {
                     // print(dateSelected.toString());
                     String formattedDate =
                         DateFormat('dd-MM-yyyy').format(pickedDate);
+
                     // print(
                     //     formattedDate); //formatted date output using intl package =>  16-03-2022
                     //you can implement different kind of Date Format here according to your requirement
@@ -192,12 +193,12 @@ class _AddIncomeState extends State<AddIncome> {
                     print(DateTime.now());
                     if (_formKey.currentState!.validate()) {
                       TransactionModel value = TransactionModel(
-                        isIncome: true, //truebecouse it is income
-                        amount: double.parse(amountController.text),
-                        name: nameController.text,
-                        categoryName: _selectedCategory,
-                        date: dateSelected,
-                      );
+                          isIncome: true, //truebecouse it is income
+                          amount: double.parse(amountController.text),
+                          name: nameController.text,
+                          categoryName: _selectedCategory,
+                          date: dateSelected,
+                          id: DateTime.now().microsecondsSinceEpoch.toString());
                       insertTransactions(value);
                     }
                   },

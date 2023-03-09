@@ -184,7 +184,8 @@ class _AddExpenseState extends State<AddExpense> {
                           amount: double.parse(amountController.text),
                           name: nameController.text,
                           categoryName: _selectedCategory,
-                          date: dateSelected);
+                          date: dateSelected,
+                          id: DateTime.now().microsecondsSinceEpoch.toString());
                       insertTransactions(value);
                     }
                   },
