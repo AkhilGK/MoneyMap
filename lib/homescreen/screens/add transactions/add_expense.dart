@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
 import 'package:moneymap/homescreen/screens/add_categories/db_categories/categories_db_functions.dart';
 
+import '../../home_screen.dart';
 import '../add_categories/categories_list.dart';
 import 'db_transactions/transaction_model.dart';
 
@@ -134,9 +135,10 @@ class _AddExpenseState extends State<AddExpense> {
                   DateTime? pickedDate = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
-                      firstDate: DateTime(
-                          2000), //DateTime.now() - not to allow to choose before today.
-                      lastDate: DateTime(2101));
+                      firstDate: DateTime.now().subtract(const Duration(
+                          days:
+                              30)), //DateTime.now() - not to allow to choose before today.
+                      lastDate: DateTime.now());
                   if (pickedDate != null) {
                     dateSelected = pickedDate;
                     // print(pickedDate.month);
@@ -179,6 +181,7 @@ class _AddExpenseState extends State<AddExpense> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       TransactionModel value = TransactionModel(
                           isIncome: false,
                           amount: double.parse(amountController.text),
@@ -187,6 +190,10 @@ class _AddExpenseState extends State<AddExpense> {
                           date: dateSelected,
                           id: DateTime.now().microsecondsSinceEpoch.toString());
                       insertTransactions(value);
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                        (Route<dynamic> route) => false,
+                      );
                     }
                   },
                   child: const Text("Add Expense"))
@@ -203,4 +210,8 @@ class _AddExpenseState extends State<AddExpense> {
     );
   } //dropdown items
 
+  final snackBar = const SnackBar(
+    content: Text('Saved Changes!'),
+    backgroundColor: (Color.fromARGB(195, 223, 91, 212)),
+  );
 }

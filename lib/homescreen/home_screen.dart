@@ -36,7 +36,10 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
                 onPressed: () {
-                  showSearch(context: context, delegate: SearchOption());
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (ctx) => const SearchAndView(),
+                  ));
+                  // showSearch(context: context, delegate: SearchAndView());
                 },
                 icon: const Icon(
                   Icons.manage_search,

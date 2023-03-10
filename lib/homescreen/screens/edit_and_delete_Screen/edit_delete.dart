@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
 import 'package:moneymap/homescreen/home_screen.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transaction_model.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
-import 'package:moneymap/homescreen/screens/first_screen.dart';
 
 import '../add_categories/db_categories/categories_db_functions.dart';
 import '../add_categories/db_categories/categories_db_model.dart';
@@ -68,35 +65,43 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
               children: [
                 G().sBox(h: 15),
                 TextFormField(
+                  keyboardType: TextInputType.number,
                   controller: amountcontroller,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Enter amount',
                     labelText: 'Amount ',
                   ),
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return ' Name is Required';
-                  //   } else {
-                  //     return null;
-                  //   }
-                  // },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return ' Amount is Required';
+                    } else {
+                      return null;
+                    }
+                  },
                 ),
                 G().sBox(h: 15),
                 TextFormField(
                   controller: namecontroller,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: ' Income Name',
                     labelText: 'Income Name',
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return ' Name is Required';
+                    } else {
+                      return null;
+                    }
+                  },
                 ),
                 G().sBox(h: 15),
                 DropdownButtonFormField(
                   decoration: InputDecoration(
                       label: Text(widget.category),
                       hintText: widget.category,
-                      border: OutlineInputBorder()),
+                      border: const OutlineInputBorder()),
                   items: categoryList(widget.isIncome),
                   // value: categorycontroll,
                   onChanged: (newvalue) {
@@ -151,7 +156,7 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
                     ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
-                              Color.fromARGB(179, 224, 53, 11)),
+                              const Color.fromARGB(179, 224, 53, 11)),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
@@ -163,7 +168,7 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
                           showDialog(
                             context: context,
                             builder: (BuildContext ctx) => AlertDialog(
-                              title: Text("Sure to delete"),
+                              title: const Text("Sure to delete"),
                               actions: [
                                 TextButton(
                                     onPressed: () {
@@ -174,21 +179,21 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
                                         (Route<dynamic> route) => false,
                                       );
                                     },
-                                    child: Text('Delete')),
+                                    child: const Text('Delete')),
                                 TextButton(
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
-                                    child: Text('Back'))
+                                    child: const Text('Back'))
                               ],
                             ),
                           );
                         },
-                        child: Icon(Icons.delete)),
+                        child: const Icon(Icons.delete)),
                     ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
-                              Color.fromARGB(179, 14, 201, 45)),
+                              const Color.fromARGB(179, 14, 201, 45)),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
@@ -209,7 +214,7 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
                                   builder: (context) => HomeScreen()),
                               (Route<dynamic> route) => false,
                             );
-                          } else {
+                          } else if (_formkey.currentState!.validate()) {
                             TransactionModel value = TransactionModel(
                                 isIncome: widget.isIncome,
                                 amount: double.parse(amountcontroller.text),
@@ -218,6 +223,11 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
                                 date: selectedDate,
                                 id: id);
                             insertTransactions(value);
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()),
+                              (Route<dynamic> route) => false,
+                            );
                           }
                         },
                         child: const Icon(Icons.check)),

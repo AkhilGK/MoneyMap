@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:moneymap/homescreen/screens/add_categories/db_categories/categories_db_functions.dart';
+import 'package:moneymap/homescreen/screens/search/search_base.dart';
 import 'package:moneymap/homescreen/screens/widgets/first_screen_widgets.dart';
 import 'package:moneymap/homescreen/screens/widgets/flipcard.dart';
 import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
@@ -51,11 +52,26 @@ class _FirstScreenState extends State<FirstScreen> {
               FirstFlipCard(),
               addButton(context),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   G().textOfMap(
                       text: "Recent Transactions",
                       size: 20,
-                      color: Colors.black)
+                      color: Colors.black),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (ctx) => const SearchAndView(),
+                      ));
+                    },
+                    child: const Text(
+                      'See all   ',
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.purple,
+                          decoration: TextDecoration.underline),
+                    ),
+                  )
                 ],
               ),
               FirstScreenWidget().listtileRecent(context)

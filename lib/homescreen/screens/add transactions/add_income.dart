@@ -4,6 +4,7 @@ import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/t
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
 import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
 
+import '../../home_screen.dart';
 import '../add_categories/categories_list.dart';
 import '../add_categories/db_categories/categories_db_functions.dart';
 
@@ -191,7 +192,9 @@ class _AddIncomeState extends State<AddIncome> {
                   ),
                   onPressed: () {
                     print(DateTime.now());
+
                     if (_formKey.currentState!.validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       TransactionModel value = TransactionModel(
                           isIncome: true, //truebecouse it is income
                           amount: double.parse(amountController.text),
@@ -200,6 +203,10 @@ class _AddIncomeState extends State<AddIncome> {
                           date: dateSelected,
                           id: DateTime.now().microsecondsSinceEpoch.toString());
                       insertTransactions(value);
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                        (Route<dynamic> route) => false,
+                      );
                     }
                   },
                   child: const Text("Add Income"))
@@ -209,4 +216,9 @@ class _AddIncomeState extends State<AddIncome> {
       ),
     );
   }
+
+  final snackBar = const SnackBar(
+    content: Text('Saved Changes!'),
+    backgroundColor: (Color.fromARGB(195, 223, 91, 212)),
+  );
 }

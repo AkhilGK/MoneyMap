@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:moneymap/homescreen/screens/settings/about_us.dart';
 import 'package:moneymap/homescreen/screens/settings/accountinfo.dart';
 import 'package:moneymap/homescreen/screens/settings/customer_care.dart';
+import 'package:moneymap/homescreen/screens/settings/terms_and_conditions.dart';
 import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -62,7 +63,7 @@ class SettingsScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     side: BorderSide(color: Colors.purple)),
                 leading: CircleAvatar(
-                  child: Icon(Icons.person),
+                  child: Icon(Icons.info),
                 ),
                 title: G().textOfMap(
                     text: 'About Us', size: 18, color: Colors.black87),
@@ -78,7 +79,7 @@ class SettingsScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     side: BorderSide(color: Colors.purple)),
                 leading: CircleAvatar(
-                  child: Icon(Icons.person),
+                  child: Icon(Icons.contact_mail),
                 ),
                 title: G().textOfMap(
                     text: 'Customer Care', size: 18, color: Colors.black87),
@@ -94,10 +95,26 @@ class SettingsScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     side: BorderSide(color: Colors.purple)),
                 leading: CircleAvatar(
-                  child: Icon(Icons.person),
+                  child: Icon(Icons.share),
                 ),
                 title: G()
                     .textOfMap(text: 'Share', size: 18, color: Colors.black87),
+              ),
+              G().sBox(h: 10),
+              ListTile(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: BorderSide(color: Colors.purple)),
+                leading: CircleAvatar(
+                  child: Icon(Icons.note),
+                ),
+                title: G().textOfMap(
+                    text: 'Terms&Conditions', size: 18, color: Colors.black87),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => TermsAndConditions(),
+                  ));
+                },
               ),
               G().sBox(h: 10),
             ],
