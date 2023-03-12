@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transaction_model.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
 import 'package:moneymap/homescreen/screens/edit_and_delete_Screen/edit_delete.dart';
@@ -37,7 +38,7 @@ class FirstScreenWidget {
                   ));
                 },
                 leading: CircleAvatar(
-                  child: iconFunction(value.isIncome),
+                  child: Text(dateText(value)),
                   backgroundColor: Color.fromRGBO(197, 168, 202, 1),
                 ),
                 title: Text(value.name.toString(),
@@ -100,5 +101,8 @@ class FirstScreenWidget {
           );
   }
 
+  String dateText(TransactionModel val) {
+    return DateFormat('MMM\nd').format(val.date);
+  }
   // Text textTitle(TransactionModel val) {return val.isIncome? Text('₹${val.amount}',):Text()}
 }

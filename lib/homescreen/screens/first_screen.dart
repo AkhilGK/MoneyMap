@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:moneymap/homescreen/screens/add_categories/db_categories/categories_db_functions.dart';
 import 'package:moneymap/homescreen/screens/search/search_base.dart';
 import 'package:moneymap/homescreen/screens/widgets/first_screen_widgets.dart';
 import 'package:moneymap/homescreen/screens/widgets/flipcard.dart';
 import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
-import 'package:path/path.dart';
 import 'add transactions/add_transaction.dart';
 
 class FirstScreen extends StatefulWidget {
@@ -61,7 +57,7 @@ class _FirstScreenState extends State<FirstScreen> {
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (ctx) => const SearchAndView(),
+                        builder: (ctx) => SearchAndView(),
                       ));
                     },
                     child: const Text(

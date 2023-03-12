@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
   static ValueNotifier<int> selectedBottomNotifier = ValueNotifier(0);
   final _pages = [
-    FirstScreen(),
+    const FirstScreen(),
     const StatisticsScreen(),
     const SettingsScreen()
   ];
@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
             child: IconButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) => const SearchAndView(),
+                    builder: (ctx) => SearchAndView(),
                   ));
                   // showSearch(context: context, delegate: SearchAndView());
                 },
@@ -59,4 +59,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-// G().textOfMap(text: "Money Map", size: 24, color: Colors.white)

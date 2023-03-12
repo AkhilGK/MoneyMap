@@ -157,8 +157,7 @@ class _AddIncomeState extends State<AddIncome> {
                         pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
                     dateSelected = pickedDate;
                     // print(dateSelected.toString());
-                    String formattedDate =
-                        DateFormat('dd-MM-yyyy').format(pickedDate);
+                    String formattedDate = DateFormat('yMd').format(pickedDate);
 
                     // print(
                     //     formattedDate); //formatted date output using intl package =>  16-03-2022
