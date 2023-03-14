@@ -47,6 +47,7 @@ class _AddIncomeState extends State<AddIncome> {
 
               TextFormField(
                 keyboardType: TextInputType.number,
+                maxLength: 12,
                 controller: amountController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -66,7 +67,7 @@ class _AddIncomeState extends State<AddIncome> {
               //income name
 
               TextFormField(
-                controller: nameController,
+                controller: nameController,maxLength: 30,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: ' Income Name',

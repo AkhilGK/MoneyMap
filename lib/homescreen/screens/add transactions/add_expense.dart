@@ -44,6 +44,7 @@ class _AddExpenseState extends State<AddExpense> {
               TextFormField(
                 controller: amountController,
                 keyboardType: TextInputType.number,
+                maxLength: 12,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter expense amount',
@@ -59,7 +60,7 @@ class _AddExpenseState extends State<AddExpense> {
               ),
               sboxex(h: 15),
               TextFormField(
-                controller: nameController,
+                controller: nameController,maxLength: 30,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: ' Expense Name',

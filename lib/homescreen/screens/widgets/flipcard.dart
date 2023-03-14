@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
 import '../add transactions/db_transactions/transaction_model.dart';
 import 'first_screen_widgets.dart';
+import 'dart:math';
 
 class FirstFlipCard extends StatelessWidget {
   FirstFlipCard({super.key});
@@ -29,6 +30,7 @@ class FirstFlipCard extends StatelessWidget {
         });
         savings = totalIncome - totalExpense;
         return FlipCard(
+          autoFlipDuration: Duration(seconds: 10),
           fill: Fill
               .fillBack, // Fill the back side of the card to make in the same size as the front.
           direction: FlipDirection.VERTICAL, // default
@@ -69,7 +71,10 @@ class FirstFlipCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       FirstScreenWidget().moneyMapText(
-                          text: "₹$savings", size: 22, color: Colors.white),
+                          text:
+                              "₹${double.parse((savings).toStringAsFixed(2))}",
+                          size: 22,
+                          color: Colors.white),
                     ],
                   ),
                   FirstScreenWidget().sbox(),
@@ -129,7 +134,8 @@ class FirstFlipCard extends StatelessWidget {
                                     size: 18,
                                     color: Colors.black87),
                                 FirstScreenWidget().moneyMapText(
-                                    text: "₹$totalIncome",
+                                    text:
+                                        "₹${double.parse((totalIncome).toStringAsFixed(2))}",
                                     size: 22,
                                     color: Colors.green),
                               ],
@@ -164,7 +170,8 @@ class FirstFlipCard extends StatelessWidget {
                                     size: 18,
                                     color: Colors.black),
                                 FirstScreenWidget().moneyMapText(
-                                    text: "₹$totalExpense",
+                                    text:
+                                        "₹${double.parse((totalExpense).toStringAsFixed(2))}",
                                     size: 22,
                                     color: Colors.red),
                               ],
