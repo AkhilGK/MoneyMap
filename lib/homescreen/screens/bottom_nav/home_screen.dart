@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:moneymap/homescreen/bottom_navigatior_app.dart';
 import 'package:moneymap/homescreen/screens/first_screen.dart';
 import 'package:moneymap/homescreen/screens/search/search_base.dart';
 import 'package:moneymap/homescreen/screens/settings_screen.dart';
 import 'package:moneymap/homescreen/screens/statistics_screen.dart';
 import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
+
+import 'bottom_navigatior_app.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -37,9 +35,8 @@ class HomeScreen extends StatelessWidget {
             child: IconButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) => SearchAndView(),
+                    builder: (ctx) => const SearchAndView(),
                   ));
-                  // showSearch(context: context, delegate: SearchAndView());
                 },
                 icon: const Icon(
                   Icons.manage_search,

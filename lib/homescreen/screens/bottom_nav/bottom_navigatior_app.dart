@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:moneymap/homescreen/home_screen.dart';
+
+import 'home_screen.dart';
 
 class BottomNavigatorMoneyMap extends StatelessWidget {
   const BottomNavigatorMoneyMap({super.key});

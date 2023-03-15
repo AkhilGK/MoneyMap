@@ -6,7 +6,7 @@ import 'db_categories/categories_db_model.dart';
 class CategoriesList extends StatefulWidget {
   final bool type;
 
-  CategoriesList({
+  const CategoriesList({
     super.key,
     required this.type,
   });
@@ -30,7 +30,7 @@ class _CategoriesListState extends State<CategoriesList> {
       ),
       floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.purple,
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
           onPressed: () {
             _displayDialog(context);
           }),
@@ -57,7 +57,7 @@ class _CategoriesListState extends State<CategoriesList> {
                           child: ListTile(
                             title: Text(
                               newInList[index].catName,
-                              style: TextStyle(fontSize: 18),
+                              style: const TextStyle(fontSize: 18),
                             ),
                             trailing: IconButton(
                                 onPressed: () {
@@ -65,7 +65,7 @@ class _CategoriesListState extends State<CategoriesList> {
 
                                   refreshUI();
                                 },
-                                icon: Icon(Icons.delete)),
+                                icon: const Icon(Icons.delete)),
                           ),
                         );
                       },
@@ -85,14 +85,15 @@ class _CategoriesListState extends State<CategoriesList> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Enter the Category'),
+            title: const Text('Enter the Category'),
             content: TextField(
               controller: _CategoryController,
-              decoration: InputDecoration(hintText: "Type category name:"),
+              decoration:
+                  const InputDecoration(hintText: "Type category name:"),
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('SUBMIT'),
+                child: const Text('SUBMIT'),
                 onPressed: () {
                   final incomeCategory = CategoryModel(
                       id: DateTime.now().toString(),

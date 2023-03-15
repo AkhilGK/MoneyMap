@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:moneymap/homescreen/screens/statistics_screens/all_stat.dart';
 import 'package:moneymap/homescreen/screens/statistics_screens/expense_stat.dart';
 import 'package:moneymap/homescreen/screens/statistics_screens/income_stat.dart';
 
@@ -14,7 +13,7 @@ class StatisticsScreen extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: DefaultTabController(
-          length: 2, // length of tabs
+          length: 3, // length of tabs
           initialIndex: 0,
           child: SingleChildScrollView(
             child: Column(
@@ -28,7 +27,7 @@ class StatisticsScreen extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
-                          color: Color.fromARGB(255, 228, 216, 225)),
+                          color: Color.fromARGB(255, 201, 194, 199)),
                       height: 50,
                       child: TabBar(
                         indicatorPadding: EdgeInsets.all(6),
@@ -41,14 +40,20 @@ class StatisticsScreen extends StatelessWidget {
                         tabs: const [
                           Tab(
                             child: Text(
-                              'Income Chart',
+                              'All',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
+                          Tab(
+                            child: Text(
+                              'Income ',
                               style: TextStyle(fontSize: 18),
                             ),
                             // text: "Income",
                           ),
                           Tab(
                             child: Text(
-                              'Expense Chart',
+                              'Expense ',
                               style: TextStyle(fontSize: 18),
                             ),
                           ),
@@ -63,8 +68,11 @@ class StatisticsScreen extends StatelessWidget {
                     // decoration: BoxDecoration(
                     //     border: Border(
                     //         top: BorderSide(color: Colors.grey, width: 0.5))),
-                    child: TabBarView(
-                        children: <Widget>[IncomeStat(), ExpenseStat()]),
+                    child: TabBarView(children: <Widget>[
+                      AllStats(),
+                      IncomeStat(),
+                      ExpenseStat(),
+                    ]),
                   )
                 ]),
           ),

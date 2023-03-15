@@ -44,7 +44,7 @@ class MoneyMap extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          scaffoldBackgroundColor: Color.fromARGB(255, 234, 218, 235),
+          scaffoldBackgroundColor: const Color.fromARGB(255, 234, 218, 235),
           primarySwatch: Colors.purple,
           fontFamily: GoogleFonts.dmSans().fontFamily),
       home: const SplashScreen(),

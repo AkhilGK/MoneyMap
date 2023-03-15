@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
-
 import '../add transactions/db_transactions/transaction_model.dart';
 import '../edit_and_delete_Screen/edit_delete.dart';
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 
 class SearchAndView extends StatefulWidget {
-  SearchAndView({super.key});
+  const SearchAndView({super.key});
 
   @override
   State<SearchAndView> createState() => _SearchAndViewState();
@@ -27,8 +26,6 @@ class _SearchAndViewState extends State<SearchAndView> {
   DateTime? endDate;
   @override
   void initState() {
-    // TODO: implement initState
-
     outputList.value = listToDisplay;
     super.initState();
   }
@@ -80,7 +77,7 @@ class _SearchAndViewState extends State<SearchAndView> {
               ),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Colors.blue, width: 2)),
+                    side: const BorderSide(color: Colors.blue, width: 2)),
                 onPressed: () {
                   showCustomDateRangePicker(
                     context,
@@ -104,12 +101,12 @@ class _SearchAndViewState extends State<SearchAndView> {
                   );
                 },
                 child: startDate == null
-                    ? Icon(
+                    ? const Icon(
                         Icons.calendar_today_outlined,
                         color: Colors.grey,
                       )
                     : Text(
-                        style: TextStyle(color: Colors.grey),
+                        style: const TextStyle(color: Colors.grey),
                         '${startDate != null ? DateFormat("dd/MMM/yyyy").format(startDate!) : '-'} - ${endDate != null ? DateFormat("dd/MMM/yyyy").format(endDate!) : '-'}',
                       ),
               ),
@@ -130,7 +127,6 @@ class _SearchAndViewState extends State<SearchAndView> {
                                   .contains(query.toLowerCase()))
                           .toList();
                       outputList.notifyListeners();
-                      print(outputList.value.length);
                     } else if (typeSelected == dropItems[1]) {
                       outputList.value = listToDisplay
                           .where((element) =>
@@ -143,7 +139,6 @@ class _SearchAndViewState extends State<SearchAndView> {
                                       .contains(query.toLowerCase())))
                           .toList();
                       outputList.notifyListeners();
-                      print(outputList.value.length);
                     } else {
                       outputList.value = listToDisplay
                           .where((element) =>
@@ -156,7 +151,6 @@ class _SearchAndViewState extends State<SearchAndView> {
                                       .contains(query.toLowerCase())))
                           .toList();
                       outputList.notifyListeners();
-                      print(outputList.value.length);
                     }
                     return ValueListenableBuilder(
                       valueListenable: outputList,
@@ -186,12 +180,12 @@ class _SearchAndViewState extends State<SearchAndView> {
                                   ));
                                 },
                                 leading: CircleAvatar(
-                                  child: Text(dateText(value)),
                                   backgroundColor:
-                                      Color.fromRGBO(197, 168, 202, 1),
+                                      const Color.fromRGBO(197, 168, 202, 1),
+                                  child: Text(dateText(value)),
                                 ),
                                 title: Text(value.name.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.black87, fontSize: 18)),
                                 subtitle: Text(value.categoryName.toString(),
                                     style: const TextStyle(
@@ -230,7 +224,6 @@ class _SearchAndViewState extends State<SearchAndView> {
                               element.date.isAfter(startDate!))
                           .toList();
                       outputList.notifyListeners();
-                      print(outputList.value.length);
                     } else if (typeSelected == dropItems[1]) {
                       outputList.value = listToDisplay
                           .where((element) =>
@@ -246,7 +239,6 @@ class _SearchAndViewState extends State<SearchAndView> {
                               element.date.isAfter(startDate!))
                           .toList();
                       outputList.notifyListeners();
-                      print(outputList.value.length);
                     } else {
                       outputList.value = listToDisplay
                           .where((element) =>
@@ -262,7 +254,6 @@ class _SearchAndViewState extends State<SearchAndView> {
                               element.date.isAfter(startDate!))
                           .toList();
                       outputList.notifyListeners();
-                      print(outputList.value.length);
                     }
                     return ValueListenableBuilder(
                       valueListenable: outputList,
@@ -292,12 +283,12 @@ class _SearchAndViewState extends State<SearchAndView> {
                                   ));
                                 },
                                 leading: CircleAvatar(
-                                  child: Text(dateText(value)),
                                   backgroundColor:
-                                      Color.fromRGBO(197, 168, 202, 1),
+                                      const Color.fromRGBO(197, 168, 202, 1),
+                                  child: Text(dateText(value)),
                                 ),
                                 title: Text(value.name.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.black87, fontSize: 18)),
                                 subtitle: Text(value.categoryName.toString(),
                                     style: const TextStyle(
@@ -329,26 +320,26 @@ class _SearchAndViewState extends State<SearchAndView> {
 
   Icon iconFunction(bool val) {
     return val
-        ? Icon(
+        ? const Icon(
             Icons.attach_money_rounded,
             color: Colors.green,
           )
-        : Icon(
+        : const Icon(
             Icons.shopping_cart,
             color: Colors.red,
           );
   }
 
-  void searchResult(String searchKey) {
-    if (searchKey.isEmpty) {
-      outputList.value = listToDisplay;
-    } else if (searchKey.isEmpty || dropdownValue == 'Income') {
-      outputList.value.clear();
-      outputList.value.addAll(
-          listToDisplay.where((element) => element.isIncome == true).toList());
-      outputList.notifyListeners();
-    }
-  }
+  // void searchResult(String searchKey) {
+  //   if (searchKey.isEmpty) {
+  //     outputList.value = listToDisplay;
+  //   } else if (searchKey.isEmpty || dropdownValue == dropItems[1]) {
+  //     outputList.value.clear();
+  //     outputList.value.addAll(
+  //         listToDisplay.where((element) => element.isIncome == true).toList());
+  //     outputList.notifyListeners();
+  //   }
+  // }
 
   String dateText(TransactionModel val) {
     return DateFormat('MMM\nd').format(val.date);

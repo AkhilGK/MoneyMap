@@ -4,9 +4,9 @@ import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/t
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
 import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
 
-import '../../home_screen.dart';
 import '../add_categories/categories_list.dart';
 import '../add_categories/db_categories/categories_db_functions.dart';
+import '../bottom_nav/home_screen.dart';
 
 class AddIncome extends StatefulWidget {
   const AddIncome({super.key});
@@ -67,7 +67,8 @@ class _AddIncomeState extends State<AddIncome> {
               //income name
 
               TextFormField(
-                controller: nameController,maxLength: 30,
+                controller: nameController,
+                maxLength: 30,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: ' Income Name',
@@ -123,7 +124,8 @@ class _AddIncomeState extends State<AddIncome> {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => CategoriesList(type: true),
+                            builder: (context) =>
+                                const CategoriesList(type: true),
                           ),
                         );
                       },

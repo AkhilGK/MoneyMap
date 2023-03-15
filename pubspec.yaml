@@ -39,6 +39,7 @@ dependencies:
   google_fonts: ^4.0.3
   hive_flutter: ^1.1.0
   intl: ^0.18.0
+  syncfusion_flutter_charts: ^20.4.54
   url_launcher: ^6.1.9
 
 dev_dependencies:

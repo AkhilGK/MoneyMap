@@ -57,7 +57,7 @@ class _FirstScreenState extends State<FirstScreen> {
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (ctx) => SearchAndView(),
+                        builder: (ctx) => const SearchAndView(),
                       ));
                     },
                     child: const Text(

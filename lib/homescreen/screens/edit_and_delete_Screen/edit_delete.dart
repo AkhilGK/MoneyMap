@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:moneymap/homescreen/home_screen.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transaction_model.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
 
 import '../add_categories/db_categories/categories_db_functions.dart';
 import '../add_categories/db_categories/categories_db_model.dart';
+import '../bottom_nav/home_screen.dart';
 import '../widgets/global_widgets.dart';
 
 class EditAndDeleteScreen extends StatefulWidget {
@@ -50,6 +50,7 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
     selectedDate = widget.date;
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -131,13 +132,10 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
                         lastDate: DateTime(2101));
 
                     if (pickedDate != null) {
-                      print(
-                          pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
                       selectedDate = pickedDate;
                       String formattedDate =
                           DateFormat('yyyy-MM-dd').format(pickedDate);
-                      print(
-                          formattedDate); //formatted date output using intl package =>  2021-03-16
+
                       //you can implement different kind of Date Format here according to your requirement
 
                       setState(() {
@@ -145,7 +143,7 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
                             formattedDate; //set output date to TextField value.
                       });
                     } else {
-                      print("Date is not selected");
+                      return;
                     }
                   },
                 ),

@@ -38,11 +38,12 @@ class FirstScreenWidget {
                   ));
                 },
                 leading: CircleAvatar(
+                  backgroundColor: const Color.fromRGBO(197, 168, 202, 1),
                   child: Text(dateText(value)),
-                  backgroundColor: Color.fromRGBO(197, 168, 202, 1),
                 ),
                 title: Text(value.name.toString(),
-                    style: TextStyle(color: Colors.black87, fontSize: 18)),
+                    style:
+                        const TextStyle(color: Colors.black87, fontSize: 18)),
                 subtitle: Text(value.categoryName.toString(),
                     style: const TextStyle(
                         color: Color.fromARGB(255, 88, 17, 17), fontSize: 15)),
@@ -84,18 +85,18 @@ class FirstScreenWidget {
 
 //A sized box
   Widget sbox() {
-    return SizedBox(
+    return const SizedBox(
       height: 10,
     );
   }
 
   Icon iconFunction(bool val) {
     return val
-        ? Icon(
+        ? const Icon(
             Icons.attach_money_rounded,
             color: Colors.green,
           )
-        : Icon(
+        : const Icon(
             Icons.shopping_cart,
             color: Colors.red,
           );

@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
 import 'package:moneymap/homescreen/screens/add_categories/db_categories/categories_db_functions.dart';
 
-import '../../home_screen.dart';
 import '../add_categories/categories_list.dart';
+import '../bottom_nav/home_screen.dart';
 import 'db_transactions/transaction_model.dart';
 
 class AddExpense extends StatefulWidget {
-  AddExpense({super.key});
+  const AddExpense({super.key});
 
   @override
   State<AddExpense> createState() => _AddExpenseState();
@@ -60,7 +58,8 @@ class _AddExpenseState extends State<AddExpense> {
               ),
               sboxex(h: 15),
               TextFormField(
-                controller: nameController,maxLength: 30,
+                controller: nameController,
+                maxLength: 30,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: ' Expense Name',
@@ -114,7 +113,8 @@ class _AddExpenseState extends State<AddExpense> {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => CategoriesList(type: false),
+                            builder: (context) =>
+                                const CategoriesList(type: false),
                           ),
                         );
                       },

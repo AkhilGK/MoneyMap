@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:moneymap/homescreen/home_screen.dart';
 import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
 import 'package:moneymap/main.dart';
+
+import '../../homescreen/screens/bottom_nav/home_screen.dart';
 
 class UserLogin extends StatelessWidget {
   UserLogin({super.key});
@@ -28,26 +29,26 @@ class UserLogin extends StatelessWidget {
                 ],
               ),
               Image.asset('Assets/images/LoginImg.png'),
-              Row(  
+              Row(
                 //name row
                 children: [
-              Text(
-                " Your name",
-                style: GoogleFonts.dmSans(
-                    fontSize: 20,
-                    color: Colors.purple,
-                    fontWeight: FontWeight.bold),
-              ),
+                  Text(
+                    " Your name",
+                    style: GoogleFonts.dmSans(
+                        fontSize: 20,
+                        color: Colors.purple,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
               TextFormField(
                 controller: userName,
                 decoration: const InputDecoration(
-              hintText: 'Enter your name',
-              border: OutlineInputBorder(),
+                  hintText: 'Enter your name',
+                  border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               Row(
@@ -63,11 +64,10 @@ class UserLogin extends StatelessWidget {
                         loginSkipped = true;
                         Hive.box('onboarding_check')
                             .put('LoginSkipped', loginSkipped);
-                        Hive.box('onboarding_check').put('userName',
-                            'User'); //added user name to data base
+                        Hive.box('onboarding_check').put(
+                            'userName', 'User'); //added user name to data base
                         Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (context) => HomeScreen()),
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
                           (Route<dynamic> route) => false,
                         );
                       },
@@ -90,8 +90,7 @@ class UserLogin extends StatelessWidget {
                         Hive.box('onboarding_check').put('LoginSkipped',
                             loginSkipped); //confirm the page wont appear again at restart
                         Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (context) => HomeScreen()),
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
                           (Route<dynamic> route) => false,
                         );
                       },

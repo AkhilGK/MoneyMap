@@ -1,12 +1,9 @@
 // import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
 import '../add transactions/db_transactions/transaction_model.dart';
 import 'first_screen_widgets.dart';
-import 'dart:math';
 
 class FirstFlipCard extends StatelessWidget {
   FirstFlipCard({super.key});
@@ -21,16 +18,16 @@ class FirstFlipCard extends StatelessWidget {
         totalExpense = 0;
         totalIncome = 0;
         savings = 0;
-        transList.forEach((tlist) {
+        for (var tlist in transList) {
           if (tlist.isIncome) {
             totalIncome = totalIncome + tlist.amount;
           } else {
             totalExpense = totalExpense + tlist.amount;
           }
-        });
+        }
         savings = totalIncome - totalExpense;
         return FlipCard(
-          autoFlipDuration: Duration(seconds: 10),
+          autoFlipDuration: const Duration(seconds: 10),
           fill: Fill
               .fillBack, // Fill the back side of the card to make in the same size as the front.
           direction: FlipDirection.VERTICAL, // default
@@ -40,10 +37,10 @@ class FirstFlipCard extends StatelessWidget {
             height: 160,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              color: Color.fromRGBO(186, 95, 202, 1),
+              color: const Color.fromRGBO(186, 95, 202, 1),
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -55,9 +52,9 @@ class FirstFlipCard extends StatelessWidget {
                         size: 24,
                         color: Colors.white70,
                       ),
-                      Container(
-                        child: Image.asset("Assets/images/LoginImg.png"),
+                      SizedBox(
                         height: 45,
+                        child: Image.asset("Assets/images/LoginImg.png"),
                       )
                     ],
                   ),
@@ -92,7 +89,7 @@ class FirstFlipCard extends StatelessWidget {
               color: Colors.white,
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -103,7 +100,7 @@ class FirstFlipCard extends StatelessWidget {
                           FirstScreenWidget().moneyMapText(
                               text: "Savings & Expense",
                               size: 18,
-                              color: Color.fromARGB(255, 136, 29, 155)),
+                              color: const Color.fromARGB(255, 136, 29, 155)),
                         ],
                       ),
                       FirstScreenWidget().sbox(),

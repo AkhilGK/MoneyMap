@@ -64,10 +64,10 @@ class AddTransaction extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 600,
                       child: TabBarView(
-                          children: <Widget>[const AddIncome(), AddExpense()]),
+                          children: <Widget>[AddIncome(), AddExpense()]),
                     )
                   ]),
             ),
