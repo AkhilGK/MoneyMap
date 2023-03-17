@@ -19,7 +19,7 @@ class StatisticsScreen extends StatelessWidget {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Padding(
@@ -27,10 +27,10 @@ class StatisticsScreen extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
-                          color: Color.fromARGB(255, 201, 194, 199)),
+                          color: const Color.fromARGB(255, 201, 194, 199)),
                       height: 50,
                       child: TabBar(
-                        indicatorPadding: EdgeInsets.all(6),
+                        indicatorPadding: const EdgeInsets.all(6),
                         indicator: BoxDecoration(
                             // border: Border.all(),
                             borderRadius: BorderRadius.circular(50),
@@ -61,17 +61,12 @@ class StatisticsScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     height: 600,
-
-                    // height: 600, //height of TabBarView
-                    // decoration: BoxDecoration(
-                    //     border: Border(
-                    //         top: BorderSide(color: Colors.grey, width: 0.5))),
                     child: TabBarView(children: <Widget>[
                       AllStats(),
-                      IncomeStat(),
-                      ExpenseStat(),
+                      const IncomeStat(),
+                      const ExpenseStat(),
                     ]),
                   )
                 ]),

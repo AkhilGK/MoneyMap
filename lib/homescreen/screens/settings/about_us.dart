@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
 
 class AboutUs extends StatelessWidget {
@@ -17,20 +15,26 @@ class AboutUs extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(30.0),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                G().sBox(h: 15),
+                const Text(
+                  'Version 1.0.0',
+                  style: TextStyle(fontSize: 20),
+                ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.edit),
                     SizedBox(
-                      width: 20,
+                      height: 80,
+                      width: 160,
+                      child: Image.asset("Assets/images/moneyMapLogo.png"),
                     ),
-                    G().textOfMap(
-                        text: "Add or change name",
-                        size: 22,
-                        color: Colors.purple)
                   ],
                 ),
+                const Text(
+                    'Created by Akhil G K, as a first mobile application '),
+                const Text('using flutter.')
               ],
             ),
           ),

@@ -3,6 +3,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:moneymap/homescreen/screens/first_screen.dart';
 import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
 
+import '../bottom_nav/home_screen.dart';
+
 class AccountInfo extends StatelessWidget {
   AccountInfo({super.key});
   TextEditingController _userNameInSetting = TextEditingController();
@@ -35,7 +37,7 @@ class AccountInfo extends StatelessWidget {
                   G().sBox(h: 15),
                   TextFormField(
                     controller: _userNameInSetting,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Enter Name',
                       labelText: 'User',
@@ -47,6 +49,10 @@ class AccountInfo extends StatelessWidget {
                         Hive.box('onboarding_check')
                             .put('userName', _userNameInSetting.text);
                         const FirstScreen();
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                          (Route<dynamic> route) => false,
+                        );
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
                       child: const Text('Save'))

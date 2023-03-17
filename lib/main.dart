@@ -29,6 +29,7 @@ Future<void> main() async {
 
   runApp(const MoneyMap());
 //to notify category list
+  predefCategory();
   refreshUI();
   alertUi();
 }

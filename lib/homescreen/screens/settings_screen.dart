@@ -1,16 +1,19 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:moneymap/homescreen/screens/settings/about_us.dart';
 import 'package:moneymap/homescreen/screens/settings/accountinfo.dart';
 import 'package:moneymap/homescreen/screens/settings/customer_care.dart';
 import 'package:moneymap/homescreen/screens/settings/terms_and_conditions.dart';
 import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
+import 'package:share_plus/share_plus.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -56,15 +59,15 @@ class SettingsScreen extends StatelessWidget {
             ListTile(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
-                  side: BorderSide(color: Colors.purple)),
-              leading: CircleAvatar(
+                  side: const BorderSide(color: Colors.purple)),
+              leading: const CircleAvatar(
                 child: Icon(Icons.info),
               ),
               title: G()
                   .textOfMap(text: 'About Us', size: 18, color: Colors.black87),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AboutUs(),
+                  builder: (context) => const AboutUs(),
                 ));
               },
             ),
@@ -72,15 +75,15 @@ class SettingsScreen extends StatelessWidget {
             ListTile(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
-                  side: BorderSide(color: Colors.purple)),
-              leading: CircleAvatar(
+                  side: const BorderSide(color: Colors.purple)),
+              leading: const CircleAvatar(
                 child: Icon(Icons.contact_mail),
               ),
               title: G().textOfMap(
                   text: 'Customer Care', size: 18, color: Colors.black87),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => CustomerCare(),
+                  builder: (context) => const CustomerCare(),
                 ));
               },
             ),
@@ -88,29 +91,17 @@ class SettingsScreen extends StatelessWidget {
             ListTile(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
-                  side: BorderSide(color: Colors.purple)),
-              leading: CircleAvatar(
+                  side: const BorderSide(color: Colors.purple)),
+              leading: const CircleAvatar(
                 child: Icon(Icons.share),
               ),
+              onTap: () {
+                Share.share('com.example.moneymap');
+              },
               title:
                   G().textOfMap(text: 'Share', size: 18, color: Colors.black87),
             ),
             G().sBox(h: 10),
-            ListTile(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  side: BorderSide(color: Colors.purple)),
-              leading: CircleAvatar(
-                child: Icon(Icons.note),
-              ),
-              title: G().textOfMap(
-                  text: 'Terms&Conditions', size: 18, color: Colors.black87),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const TermsAndConditions(),
-                ));
-              },
-            ),
             G().sBox(h: 10),
           ],
         ),

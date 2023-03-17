@@ -34,7 +34,7 @@ class FirstFlipCard extends StatelessWidget {
           side: CardSide.FRONT, // The side to initially display.
           front: Container(
             width: 260,
-            height: 160,
+            height: 180,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               color: const Color.fromRGBO(186, 95, 202, 1),

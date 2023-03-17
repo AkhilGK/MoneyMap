@@ -4,6 +4,8 @@ import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/t
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
 import 'package:moneymap/homescreen/screens/edit_and_delete_Screen/edit_delete.dart';
 
+import 'empty_message.dart';
+
 class FirstScreenWidget {
   //add button
 
@@ -13,50 +15,54 @@ class FirstScreenWidget {
     return ValueListenableBuilder(
       valueListenable: transactionNotifier,
       builder: (context, List<TransactionModel> newList, _) {
-        return ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: recentCount(),
-          itemBuilder: (context, index) {
-            TransactionModel value = newList[index];
-            return Card(
-              elevation: 1,
-              child: ListTile(
-                onLongPress: () => deleteTransaction(value.id!),
-                onTap: () {
-                  Navigator.of(ctx).push(MaterialPageRoute(
-                    builder: (context) {
-                      return EditAndDeleteScreen(
-                        amount: value.amount,
-                        name: value.name,
-                        category: value.categoryName,
-                        date: value.date,
-                        isIncome: value.isIncome,
-                        id: value.id!,
-                      );
-                    },
-                  ));
+        return newList.isEmpty
+            ? const EmptyMesssage()
+            : ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: recentCount(),
+                itemBuilder: (context, index) {
+                  TransactionModel value = newList[index];
+                  return Card(
+                    elevation: 1,
+                    child: ListTile(
+                      onLongPress: () => deleteTransaction(value.id!),
+                      onTap: () {
+                        Navigator.of(ctx).push(MaterialPageRoute(
+                          builder: (context) {
+                            return EditAndDeleteScreen(
+                              amount: value.amount,
+                              name: value.name,
+                              category: value.categoryName,
+                              date: value.date,
+                              isIncome: value.isIncome,
+                              id: value.id!,
+                            );
+                          },
+                        ));
+                      },
+                      leading: CircleAvatar(
+                        radius: 25,
+                        backgroundColor: const Color.fromRGBO(197, 168, 202, 1),
+                        child: Text(dateText(value)),
+                      ),
+                      title: Text(value.name.toString(),
+                          style: const TextStyle(
+                              color: Colors.black87, fontSize: 18)),
+                      subtitle: Text(value.categoryName.toString(),
+                          style: const TextStyle(
+                              color: Color.fromARGB(255, 88, 17, 17),
+                              fontSize: 15)),
+                      trailing: Text(
+                        '₹${value.amount}',
+                        style: TextStyle(
+                            color: value.isIncome ? Colors.green : Colors.red,
+                            fontSize: 20),
+                      ),
+                    ),
+                  );
                 },
-                leading: CircleAvatar(
-                  backgroundColor: const Color.fromRGBO(197, 168, 202, 1),
-                  child: Text(dateText(value)),
-                ),
-                title: Text(value.name.toString(),
-                    style:
-                        const TextStyle(color: Colors.black87, fontSize: 18)),
-                subtitle: Text(value.categoryName.toString(),
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 88, 17, 17), fontSize: 15)),
-                trailing: Text(
-                  '₹${value.amount}',
-                  style: TextStyle(
-                      color: value.isIncome ? Colors.green : Colors.red,
-                      fontSize: 20),
-                ),
-              ),
-            );
-          },
-        );
+              );
       },
     );
   }
@@ -103,7 +109,6 @@ class FirstScreenWidget {
   }
 
   String dateText(TransactionModel val) {
-    return DateFormat('MMM\nd').format(val.date);
+    return DateFormat('MMM\n d').format(val.date);
   }
-  // Text textTitle(TransactionModel val) {return val.isIncome? Text('₹${val.amount}',):Text()}
 }
