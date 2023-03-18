@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
+import 'package:moneymap/homescreen/screens/search/search_functions.dart';
 import 'package:moneymap/homescreen/screens/widgets/empty_message.dart';
 import '../add transactions/db_transactions/transaction_model.dart';
 import '../edit_and_delete_Screen/edit_delete.dart';
@@ -120,215 +121,80 @@ class _SearchAndViewState extends State<SearchAndView> {
                       builder: (context, typeSelected, _) {
                         //without date range
 
-                        if (startDate == null && endDate == null) {
-                          if (typeSelected == dropItems[0]) {
-                            outputList.value = listToDisplay
-                                .where((element) =>
-                                    element.categoryName
-                                        .toLowerCase()
-                                        .contains(query.toLowerCase()) ||
-                                    element.name
-                                        .toLowerCase()
-                                        .contains(query.toLowerCase()))
-                                .toList();
-                            outputList.notifyListeners();
-                          } else if (typeSelected == dropItems[1]) {
-                            outputList.value = listToDisplay
-                                .where((element) =>
-                                    element.isIncome == true &&
-                                    (element.categoryName
-                                            .toLowerCase()
-                                            .contains(query.toLowerCase()) ||
-                                        element.name
-                                            .toLowerCase()
-                                            .contains(query.toLowerCase())))
-                                .toList();
-                            outputList.notifyListeners();
-                          } else {
-                            outputList.value = listToDisplay
-                                .where((element) =>
-                                    element.isIncome == false &&
-                                    (element.categoryName
-                                            .toLowerCase()
-                                            .contains(query.toLowerCase()) ||
-                                        element.name
-                                            .toLowerCase()
-                                            .contains(query.toLowerCase())))
-                                .toList();
-                            outputList.notifyListeners();
-                          }
-                          return ValueListenableBuilder(
-                            valueListenable: outputList,
-                            builder:
-                                (context, List<TransactionModel> newList, _) {
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: outputList.value.length,
-                                itemBuilder: (context, index) {
-                                  TransactionModel value = newList[index];
-                                  return Card(
-                                    elevation: 1,
-                                    child: ListTile(
-                                      onLongPress: () =>
-                                          deleteTransaction(value.id!),
-                                      onTap: () {
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (context) {
-                                            return EditAndDeleteScreen(
-                                              amount: value.amount,
-                                              name: value.name,
-                                              category: value.categoryName,
-                                              date: value.date,
-                                              isIncome: value.isIncome,
-                                              id: value.id!,
-                                            );
-                                          },
-                                        ));
-                                      },
-                                      leading: CircleAvatar(
-                                        backgroundColor: const Color.fromRGBO(
-                                            197, 168, 202, 1),
-                                        child: Text(dateText(value)),
-                                      ),
-                                      title: Text(value.name.toString(),
-                                          style: const TextStyle(
-                                              color: Colors.black87,
-                                              fontSize: 18)),
-                                      subtitle: Text(
-                                          value.categoryName.toString(),
-                                          style: const TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 88, 17, 17),
-                                              fontSize: 15)),
-                                      trailing: Text(
-                                        '₹${value.amount}',
-                                        style: TextStyle(
-                                            color: value.isIncome
-                                                ? Colors.green
-                                                : Colors.red,
-                                            fontSize: 20),
+                        return ValueListenableBuilder(
+                          valueListenable: searchFunction(
+                              queryString: query,
+                              transactionType: typeSelected,
+                              startDate: startDate,
+                              endDate: endDate),
+                          builder:
+                              (context, List<TransactionModel> newList, _) {
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: showList.value.length,
+                              itemBuilder: (context, index) {
+                                TransactionModel value = newList[index];
+                                return Card(
+                                  elevation: 1,
+                                  child: ListTile(
+                                    onLongPress: () =>
+                                        deleteTransaction(value.id!),
+                                    onTap: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) {
+                                          return EditAndDeleteScreen(
+                                            amount: value.amount,
+                                            name: value.name,
+                                            category: value.categoryName,
+                                            date: value.date,
+                                            isIncome: value.isIncome,
+                                            id: value.id!,
+                                          );
+                                        },
+                                      ));
+                                    },
+                                    leading: CircleAvatar(
+                                      radius: 25,
+                                      backgroundColor: const Color.fromARGB(
+                                          255, 234, 218, 235),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            dateText(value),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        }
-
-                        //with date range
-
-                        else {
-                          if (typeSelected == dropItems[0]) {
-                            outputList.value = listToDisplay
-                                .where((element) =>
-                                    element.categoryName
-                                        .toLowerCase()
-                                        .contains(query.toLowerCase()) ||
-                                    element.name
-                                        .toLowerCase()
-                                        .contains(query.toLowerCase()))
-                                .where((element) =>
-                                    element.date.isBefore(endDate!
-                                        .add(const Duration(days: 1))) &&
-                                    element.date.isAfter(startDate!
-                                        .subtract(const Duration(days: 1))))
-                                .toList();
-                            outputList.notifyListeners();
-                          } else if (typeSelected == dropItems[1]) {
-                            outputList.value = listToDisplay
-                                .where((element) =>
-                                    element.isIncome == true &&
-                                    (element.categoryName
-                                            .toLowerCase()
-                                            .contains(query.toLowerCase()) ||
-                                        element.name
-                                            .toLowerCase()
-                                            .contains(query.toLowerCase())))
-                                .where((element) =>
-                                    element.date.isBefore(endDate!) &&
-                                    element.date.isAfter(startDate!))
-                                .toList();
-                            outputList.notifyListeners();
-                          } else {
-                            outputList.value = listToDisplay
-                                .where((element) =>
-                                    element.isIncome == false &&
-                                    (element.categoryName
-                                            .toLowerCase()
-                                            .contains(query.toLowerCase()) ||
-                                        element.name
-                                            .toLowerCase()
-                                            .contains(query.toLowerCase())))
-                                .where((element) =>
-                                    element.date.isBefore(endDate!) &&
-                                    element.date.isAfter(startDate!))
-                                .toList();
-                            outputList.notifyListeners();
-                          }
-                          return ValueListenableBuilder(
-                            valueListenable: outputList,
-                            builder:
-                                (context, List<TransactionModel> newList, _) {
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: outputList.value.length,
-                                itemBuilder: (context, index) {
-                                  TransactionModel value = newList[index];
-                                  return Card(
-                                    elevation: 1,
-                                    child: ListTile(
-                                      onLongPress: () =>
-                                          deleteTransaction(value.id!),
-                                      onTap: () {
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (context) {
-                                            return EditAndDeleteScreen(
-                                              amount: value.amount,
-                                              name: value.name,
-                                              category: value.categoryName,
-                                              date: value.date,
-                                              isIncome: value.isIncome,
-                                              id: value.id!,
-                                            );
-                                          },
-                                        ));
-                                      },
-                                      leading: CircleAvatar(
-                                        radius: 23,
-                                        backgroundColor: const Color.fromRGBO(
-                                            197, 168, 202, 1),
-                                        child: Text(dateText(value)),
-                                      ),
-                                      title: Text(value.name.toString(),
-                                          style: const TextStyle(
-                                              color: Colors.black87,
-                                              fontSize: 18)),
-                                      subtitle: Text(
-                                          value.categoryName.toString(),
-                                          style: const TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 88, 17, 17),
-                                              fontSize: 15)),
-                                      trailing: Text(
-                                        '₹${value.amount}',
-                                        style: TextStyle(
-                                            color: value.isIncome
-                                                ? Colors.green
-                                                : Colors.red,
-                                            fontSize: 20),
-                                      ),
+                                    title: Text(value.name.toString(),
+                                        style: const TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 18)),
+                                    subtitle: Text(
+                                        value.categoryName.toString(),
+                                        style: const TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 88, 17, 17),
+                                            fontSize: 15)),
+                                    trailing: Text(
+                                      '₹${value.amount}',
+                                      style: TextStyle(
+                                          color: value.isIncome
+                                              ? Colors.green
+                                              : Colors.red,
+                                          fontSize: 20),
                                     ),
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        }
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        );
                       },
                     )
             ],
@@ -338,19 +204,7 @@ class _SearchAndViewState extends State<SearchAndView> {
     );
   }
 
-  Icon iconFunction(bool val) {
-    return val
-        ? const Icon(
-            Icons.attach_money_rounded,
-            color: Colors.green,
-          )
-        : const Icon(
-            Icons.shopping_cart,
-            color: Colors.red,
-          );
-  }
-
   String dateText(TransactionModel val) {
-    return DateFormat('MMM\nd').format(val.date);
+    return DateFormat('MMM\n d').format(val.date);
   }
 }

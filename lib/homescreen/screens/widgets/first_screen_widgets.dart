@@ -12,6 +12,7 @@ class FirstScreenWidget {
   //A recent transactions widget
   Widget listtileRecent(ctx) {
     // ignore: prefer_const_constructors
+
     return ValueListenableBuilder(
       valueListenable: transactionNotifier,
       builder: (context, List<TransactionModel> newList, _) {
@@ -43,8 +44,18 @@ class FirstScreenWidget {
                       },
                       leading: CircleAvatar(
                         radius: 25,
-                        backgroundColor: const Color.fromRGBO(197, 168, 202, 1),
-                        child: Text(dateText(value)),
+                        backgroundColor:
+                            const Color.fromARGB(255, 234, 218, 235),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              dateText(value),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
                       title: Text(value.name.toString(),
                           style: const TextStyle(

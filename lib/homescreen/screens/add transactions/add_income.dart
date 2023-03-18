@@ -156,8 +156,7 @@ class _AddIncomeState extends State<AddIncome> {
                       lastDate: DateTime.now());
 
                   if (pickedDate != null) {
-                    print(
-                        pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                    //pickedDate output format => 2021-03-10 00:00:00.000
                     dateSelected = pickedDate;
                     // print(dateSelected.toString());
                     String formattedDate = DateFormat('yMd').format(pickedDate);
@@ -193,8 +192,6 @@ class _AddIncomeState extends State<AddIncome> {
                     ),
                   ),
                   onPressed: () {
-                    print(DateTime.now());
-
                     if (_formKey.currentState!.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       TransactionModel value = TransactionModel(

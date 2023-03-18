@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:moneymap/homescreen/screens/settings/about_us.dart';
 import 'package:moneymap/homescreen/screens/settings/accountinfo.dart';
 import 'package:moneymap/homescreen/screens/settings/customer_care.dart';
-import 'package:moneymap/homescreen/screens/settings/terms_and_conditions.dart';
 import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
 import 'package:share_plus/share_plus.dart';
 
