@@ -46,7 +46,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white24,
+        backgroundColor: const Color.fromARGB(255, 234, 218, 235),
         title: Padding(
           padding: const EdgeInsets.all(2.0),
 
@@ -67,7 +67,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               );
             },
             child: textOB(
-              caption: 'Skip',
+              caption: 'Skip>',
               captiponSize: 18,
             ),
           ),

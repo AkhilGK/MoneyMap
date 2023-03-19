@@ -7,7 +7,7 @@ import '../bottom_nav/home_screen.dart';
 
 class AccountInfo extends StatelessWidget {
   AccountInfo({super.key});
-  TextEditingController _userNameInSetting = TextEditingController();
+  final TextEditingController _userNameInSetting = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +25,7 @@ class AccountInfo extends StatelessWidget {
                   Row(
                     children: [
                       const Icon(Icons.edit),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       G().textOfMap(

@@ -1,7 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 import '../../homescreen/screens/bottom_nav/home_screen.dart';
 import '../onboarding/onboarding_screen.dart';
 

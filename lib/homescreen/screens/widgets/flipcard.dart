@@ -1,4 +1,6 @@
 // import 'package:flip_card/flip_card.dart';
+// ignore_for_file: must_be_immutable
+
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
@@ -33,8 +35,8 @@ class FirstFlipCard extends StatelessWidget {
           direction: FlipDirection.VERTICAL, // default
           side: CardSide.FRONT, // The side to initially display.
           front: Container(
-            width: 260,
-            height: 180,
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: MediaQuery.of(context).size.height * 0.22,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               color: const Color.fromRGBO(186, 95, 202, 1),

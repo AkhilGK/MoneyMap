@@ -36,7 +36,7 @@ class AddTransaction extends StatelessWidget {
                       child: Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
-                            color: const Color.fromARGB(255, 228, 216, 225)),
+                            color: const Color.fromARGB(255, 201, 194, 199)),
                         height: 50,
                         child: TabBar(
                           indicatorPadding: const EdgeInsets.all(6),

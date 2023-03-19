@@ -37,6 +37,7 @@ dependencies:
   flip_card: ^0.7.0
   flutter:
     sdk: flutter
+  flutter_launcher_icons: ^0.12.0
   font_awesome_flutter: ^10.4.0
   google_fonts: ^4.0.3
   hive_flutter: ^1.1.0
@@ -51,6 +52,12 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   hive_generator: ^2.0.0
+
+
+flutter_icons:
+  android: true
+  image_path: "Assets/images/logo_mm.jpg" 
+  background_color: "#ffffff"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

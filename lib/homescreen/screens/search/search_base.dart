@@ -60,20 +60,29 @@ class _SearchAndViewState extends State<SearchAndView> {
                   }),
                 ),
               ),
-              DropdownButton(
-                value: dropdownValue.value,
-                items: dropItems.map((items) {
-                  return DropdownMenuItem(
-                    value: items,
-                    child: Text(items),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    dropdownValue.value = newValue!;
-                    dropdownValue.notifyListeners();
-                  });
-                },
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: const Color.fromARGB(255, 219, 207, 221),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: DropdownButton(
+                    value: dropdownValue.value,
+                    items: dropItems.map((items) {
+                      return DropdownMenuItem(
+                        value: items,
+                        child: Text(items),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        dropdownValue.value = newValue!;
+                        dropdownValue.notifyListeners();
+                      });
+                    },
+                  ),
+                ),
               ),
               const Text(
                 'Select a Date range',
@@ -81,7 +90,7 @@ class _SearchAndViewState extends State<SearchAndView> {
               ),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Colors.blue, width: 2)),
+                    side: const BorderSide(color: Colors.purple, width: 2)),
                 onPressed: () {
                   showCustomDateRangePicker(
                     context,

@@ -16,7 +16,7 @@ class CategoriesList extends StatefulWidget {
 }
 
 class _CategoriesListState extends State<CategoriesList> {
-  TextEditingController _CategoryController = TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
 
   // @override
   @override
@@ -87,7 +87,7 @@ class _CategoriesListState extends State<CategoriesList> {
           return AlertDialog(
             title: const Text('Enter the Category'),
             content: TextField(
-              controller: _CategoryController,
+              controller: _categoryController,
               decoration:
                   const InputDecoration(hintText: "Type category name:"),
             ),
@@ -97,7 +97,7 @@ class _CategoriesListState extends State<CategoriesList> {
                 onPressed: () {
                   final incomeCategory = CategoryModel(
                       id: DateTime.now().toString(),
-                      catName: _CategoryController.text,
+                      catName: _categoryController.text,
                       type: widget.type);
                   insertCategory(incomeCategory);
                   refreshUI();

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:moneymap/homescreen/screens/widgets/empty_message.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
