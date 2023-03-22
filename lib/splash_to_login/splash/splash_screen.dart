@@ -12,7 +12,7 @@ class SplashScreen extends StatelessWidget {
     return AnimatedSplashScreen(
       duration: 100,
       backgroundColor: const Color.fromARGB(249, 233, 222, 235),
-      splash: "Assets/images/moneyMapLogo.png",
+      splash: "Assets/images/logo_wo_bg.png",
       nextScreen: nextScreen(),
       splashTransition: SplashTransition.fadeTransition,
     );

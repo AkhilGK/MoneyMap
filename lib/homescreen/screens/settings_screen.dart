@@ -95,7 +95,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Icon(Icons.share),
               ),
               onTap: () {
-                Share.share('com.example.moneymap');
+                Share.share(
+                    'https://play.google.com/store/apps/details?id=in.akbromz.money_map');
               },
               title:
                   G().textOfMap(text: 'Share', size: 18, color: Colors.black87),

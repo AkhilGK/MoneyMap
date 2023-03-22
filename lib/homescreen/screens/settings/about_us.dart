@@ -18,8 +18,18 @@ class AboutUs extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 80,
+                      width: 160,
+                      child: Image.asset("Assets/images/logo_wo_bg.png"),
+                    ),
+                  ],
+                ),
                 const Text(
-                  'Version 1.0.0',
+                  'Version 1.0.1',
                   style: TextStyle(fontSize: 20),
                 ),
                 Row(

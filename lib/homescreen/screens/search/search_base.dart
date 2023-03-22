@@ -50,7 +50,6 @@ class _SearchAndViewState extends State<SearchAndView> {
                   controller: searchController,
                   decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search),
-                      suffixIcon: const Icon(Icons.clear),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15)),
                       filled: true,

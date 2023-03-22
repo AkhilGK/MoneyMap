@@ -9,7 +9,6 @@ import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/t
 import 'package:moneymap/homescreen/screens/add_categories/db_categories/categories_db_functions.dart';
 import 'package:moneymap/homescreen/screens/add_categories/db_categories/categories_db_model.dart';
 import 'package:moneymap/splash_to_login/splash/splash_screen.dart';
-
 import 'homescreen/screens/add transactions/db_transactions/transaction_model.dart';
 
 Future<void> main() async {
