@@ -8,7 +8,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
 import 'package:moneymap/homescreen/screens/add_categories/db_categories/categories_db_functions.dart';
 import 'package:moneymap/homescreen/screens/add_categories/db_categories/categories_db_model.dart';
+import 'package:moneymap/providers/onboarding_provider.dart';
 import 'package:moneymap/splash_to_login/splash/splash_screen.dart';
+import 'package:provider/provider.dart';
 import 'homescreen/screens/add transactions/db_transactions/transaction_model.dart';
 
 Future<void> main() async {
@@ -33,7 +35,6 @@ Future<void> main() async {
   alertUi();
 }
 
-bool skipped = false; //to check onboardings skipped
 bool loginSkipped = false; //to check login skipped
 
 class MoneyMap extends StatelessWidget {
@@ -41,13 +42,20 @@ class MoneyMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          scaffoldBackgroundColor: const Color.fromARGB(255, 234, 218, 235),
-          primarySwatch: Colors.purple,
-          fontFamily: GoogleFonts.dmSans().fontFamily),
-      home: const SplashScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => OnboardingProvider(),
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+            scaffoldBackgroundColor: const Color.fromARGB(255, 234, 218, 235),
+            primarySwatch: Colors.purple,
+            fontFamily: GoogleFonts.dmSans().fontFamily),
+        home: const SplashScreen(),
+      ),
     );
   }
 }

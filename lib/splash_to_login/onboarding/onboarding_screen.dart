@@ -3,10 +3,9 @@ import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:moneymap/main.dart';
+import 'package:moneymap/providers/onboarding_provider.dart';
 import 'package:moneymap/splash_to_login/onboarding/onboarding.dart';
-
-import '../userl_login/user_login.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -54,17 +53,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
           child: TextButton(
             onPressed: () {
-              skipped = true;
-              Hive.box('onboarding_check').put('is_skipped', skipped);
-
-              //if onboarding skipped go to loginpage
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return UserLogin();
-                  },
-                ),
-              );
+              Provider.of<OnboardingProvider>(context, listen: false)
+                  .skipOnboarding(context);
             },
             child: textOB(
               caption: 'Skip>',
@@ -142,15 +132,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   duration: const Duration(milliseconds: 500),
                                   curve: Curves.linear);
                             } else {
-                              skipped = true;
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) {
-                                  Hive.box('onboarding_check').put('is_skipped',
-                                      skipped); //if onboarding skipped go to loginpage
-
-                                  return UserLogin();
-                                },
-                              ));
+                              Provider.of<OnboardingProvider>(context,
+                                      listen: false)
+                                  .skipOnboarding(context);
                             }
                           },
                           child: const Padding(

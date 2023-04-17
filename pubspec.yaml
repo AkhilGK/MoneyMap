@@ -42,6 +42,7 @@ dependencies:
   google_fonts: ^4.0.3
   hive_flutter: ^1.1.0
   intl: ^0.18.0
+  provider: ^6.0.5
   share_plus: ^6.3.1
   syncfusion_flutter_charts: ^20.4.54
   url_launcher: ^6.1.10
@@ -53,10 +54,9 @@ dev_dependencies:
     sdk: flutter
   hive_generator: ^2.0.0
 
-
 flutter_icons:
   android: true
-  image_path: "Assets/images/logo_moneymap.jpg" 
+  image_path: "Assets/images/logo_moneymap.jpg"
   background_color: "#ffffff"
 
 # For information on the generic Dart part of this file, see the
