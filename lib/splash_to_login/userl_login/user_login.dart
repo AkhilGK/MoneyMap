@@ -2,11 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
-import 'package:moneymap/main.dart';
-
-import '../../homescreen/screens/bottom_nav/home_screen.dart';
+import 'package:moneymap/providers/login_provider.dart';
+import 'package:provider/provider.dart';
 
 class UserLogin extends StatelessWidget {
   UserLogin({super.key});
@@ -18,8 +16,6 @@ class UserLogin extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: ListView(
-            // crossAxisAlignment: CrossAxisAlignment.center,
-            // mainAxisSize: MainAxisSize.max,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -63,50 +59,32 @@ class UserLogin extends StatelessWidget {
                   //to skip name adding option
                   ElevatedButton(
                       onPressed: () {
-                        loginSkipped = true;
-                        Hive.box('onboarding_check')
-                            .put('LoginSkipped', loginSkipped);
-                        Hive.box('onboarding_check').put(
-                            'userName', 'User'); //added user name to data base
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
-                          (Route<dynamic> route) => false,
-                        );
+                        Provider.of<LoginProvider>(context, listen: false)
+                            .skipLogin(context);
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: G().textOfMap(
-                            text: "Skip", size: 18, color: Colors.white),
-                      )),
+                      child: buttonStyle('Skip')),
 
                   //to save name adding option
 
                   ElevatedButton(
                       onPressed: () {
-                        loginSkipped = true;
-                        if (userName.text == '') {
-                          userName.text = 'User';
-                        }
-                        Hive.box('onboarding_check').put('userName',
-                            userName.text); //added user name to data base
-                        Hive.box('onboarding_check').put('LoginSkipped',
-                            loginSkipped); //confirm the page wont appear again at restart
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
-                          (Route<dynamic> route) => false,
-                        );
+                        Provider.of<LoginProvider>(context, listen: false)
+                            .saveLogin(context, userName.text);
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: G().textOfMap(
-                            text: "Save", size: 18, color: Colors.white),
-                      )),
+                      child: buttonStyle('Save')),
                 ],
               )
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Padding buttonStyle(String caption) {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: G().textOfMap(text: caption, size: 18, color: Colors.white),
     );
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:moneymap/main.dart';
 import 'package:moneymap/providers/onboarding_provider.dart';
 import 'package:moneymap/splash_to_login/onboarding/onboarding.dart';
 import 'package:provider/provider.dart';

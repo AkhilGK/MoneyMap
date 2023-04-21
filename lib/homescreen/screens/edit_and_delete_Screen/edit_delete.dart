@@ -3,9 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transaction_model.dart';
-import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
-
-import '../add_categories/db_categories/categories_db_functions.dart';
+import 'package:moneymap/providers/category_provider.dart';
+import 'package:moneymap/providers/edit_delete_provider.dart';
+import 'package:moneymap/providers/transaction_provider.dart';
+import 'package:provider/provider.dart';
 import '../add_categories/db_categories/categories_db_model.dart';
 import '../bottom_nav/home_screen.dart';
 import '../widgets/global_widgets.dart';
@@ -33,8 +34,8 @@ class EditAndDeleteScreen extends StatefulWidget {
 class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
   TextEditingController amountcontroller = TextEditingController();
   TextEditingController namecontroller = TextEditingController();
-  late String categorycontroller;
-  TextEditingController datecontroller = TextEditingController();
+  // late String categorycontroller;
+  // TextEditingController datecontroller = TextEditingController();
   late String formattedDate;
   late DateTime selectedDate;
   late String id;
@@ -45,9 +46,11 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
     super.initState();
     amountcontroller = TextEditingController(text: widget.amount.toString());
     namecontroller = TextEditingController(text: widget.name);
-    categorycontroller = widget.category;
+    Provider.of<EditProvider>(context, listen: false).categorycontroller =
+        widget.category;
     formattedDate = DateFormat('dd-MM-yyyy').format(widget.date);
-    datecontroller = TextEditingController(text: formattedDate);
+    context.read<EditProvider>().datecontroller =
+        TextEditingController(text: formattedDate);
     id = widget.id;
     selectedDate = widget.date;
   }
@@ -108,15 +111,19 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
                   items: categoryList(widget.isIncome),
                   // value: categorycontroll,
                   onChanged: (newvalue) {
-                    setState(() {
-                      categorycontroller = newvalue!.catName;
-                    });
+                    // setState(() {
+                    //   categorycontroller = newvalue!.catName;
+                    // });
+                    context
+                        .watch<EditProvider>()
+                        .changeCategory(newvalue!.catName);
                   },
                 ),
                 G().sBox(h: 15),
                 TextField(
-                  controller:
-                      datecontroller, //editing controller of this TextField
+                  controller: context
+                      .read<EditProvider>()
+                      .datecontroller, //editing controller of this TextField
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       icon: Icon(Icons.calendar_today), //icon of text field
@@ -140,10 +147,12 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
 
                       //you can implement different kind of Date Format here according to your requirement
 
-                      setState(() {
-                        datecontroller.text =
-                            formattedDate; //set output date to TextField value.
-                      });
+                      // setState(() {
+                      //   datecontroller.text =
+                      //       formattedDate; //set output date to TextField value.
+                      // });
+                      // ignore: use_build_context_synchronously
+                      context.read<EditProvider>().pickDateFun(formattedDate);
                     } else {
                       return;
                     }
@@ -172,7 +181,9 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
                               actions: [
                                 TextButton(
                                     onPressed: () {
-                                      deleteTransaction(widget.id);
+                                      Provider.of<TransactionProvider>(context,
+                                              listen: false)
+                                          .deleteTransaction(widget.id);
                                       Navigator.of(context).pushAndRemoveUntil(
                                         MaterialPageRoute(
                                             builder: (context) => HomeScreen()),
@@ -208,7 +219,8 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
                           if (namecontroller.text == widget.name &&
                               amountcontroller.text ==
                                   widget.amount.toString() &&
-                              categorycontroller == widget.category) {
+                              context.read<EditProvider>().categorycontroller ==
+                                  widget.category) {
                             Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (context) => HomeScreen()),
@@ -219,10 +231,14 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
                                 isIncome: widget.isIncome,
                                 amount: double.parse(amountcontroller.text),
                                 name: namecontroller.text,
-                                categoryName: categorycontroller,
+                                categoryName: context
+                                    .read<EditProvider>()
+                                    .categorycontroller!,
                                 date: selectedDate,
                                 id: id);
-                            insertTransactions(value);
+                            Provider.of<TransactionProvider>(context,
+                                    listen: false)
+                                .insertTransactions(value);
                             Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (context) => HomeScreen()),
@@ -243,13 +259,15 @@ class _EditAndDeleteScreenState extends State<EditAndDeleteScreen> {
 
   List<DropdownMenuItem<CategoryModel>> categoryList(bool val) {
     return val
-        ? dropDownIncomeCategories.value
+        ? Provider.of<CategoryProvider>(context)
+            .dropDownIncomeCategories
             .map((cat) => DropdownMenuItem(
                   value: cat,
                   child: Center(child: Text(cat.catName)),
                 ))
             .toList()
-        : dropDownExpenseCategories.value
+        : Provider.of<CategoryProvider>(context)
+            .dropDownExpenseCategories
             .map((cat) => DropdownMenuItem(
                   value: cat,
                   child: Center(child: Text(cat.catName)),

@@ -2,14 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class CustomerCare extends StatefulWidget {
+class CustomerCare extends StatelessWidget {
   const CustomerCare({super.key});
 
-  @override
-  State<CustomerCare> createState() => _CustomerCareState();
-}
-
-class _CustomerCareState extends State<CustomerCare> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,8 +28,7 @@ class _CustomerCareState extends State<CustomerCare> {
                       padding: const EdgeInsets.symmetric(vertical: 30),
                       child: ElevatedButton(
                           onPressed: () {
-                            launchUrlString(
-                                'mailto:akhil.g.krishnan9446@gmail.com');
+                            launchUrlString('mailto:nanohardbro@gmail.com');
                           },
                           child: const Text("Mail Us Now")),
                     ),

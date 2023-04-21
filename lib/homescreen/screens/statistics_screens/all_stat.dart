@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:moneymap/homescreen/screens/widgets/empty_message.dart';
+import 'package:moneymap/providers/transaction_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../add transactions/db_transactions/transaction_model.dart';
@@ -12,11 +14,14 @@ class AllStats extends StatelessWidget {
   List<int> allStats = [];
   @override
   Widget build(BuildContext context) {
-    return transactionNotifier.value.isEmpty
+    return Provider.of<TransactionProvider>(context, listen: false)
+            .transactionNotifier
+            .isEmpty
         ? const EmptyMesssage()
-        : ValueListenableBuilder(
-            valueListenable: transactionNotifier,
-            builder: (context, List<TransactionModel> transactions, _) {
+        : Consumer<TransactionProvider>(
+            // valueListenable: transactionNotifier,
+            builder: (context, providerModel, _) {
+              final transactions = providerModel.transactionNotifier;
               double incomeTotal = 0;
               double expenseTotal = 0;
               for (var element in transactions) {

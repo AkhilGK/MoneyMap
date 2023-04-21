@@ -2,17 +2,20 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transaction_model.dart';
-import '../add transactions/db_transactions/transactions_functions.dart';
+import 'package:moneymap/providers/transaction_provider.dart';
+import 'package:provider/provider.dart';
 
-ValueNotifier<List<TransactionModel>> showList = ValueNotifier([]);
-List<String> dropItems = ['All transactions', 'Income', 'Expense'];
-List<TransactionModel> listToDisplay =
-    transactionNotifier.value; //take all value from main list
+//take all value from main list
 ValueNotifier<List<TransactionModel>> searchFunction(
     {required String queryString,
     required String transactionType,
     DateTime? startDate,
-    DateTime? endDate}) {
+    DateTime? endDate,
+    required BuildContext ctx}) {
+  ValueNotifier<List<TransactionModel>> showList = ValueNotifier([]);
+  List<String> dropItems = ['All transactions', 'Income', 'Expense'];
+  List<TransactionModel> listToDisplay =
+      Provider.of<TransactionProvider>(ctx, listen: false).transactionNotifier;
   if (startDate == null && endDate == null) {
     if (transactionType == dropItems[0]) {
       showList.value = listToDisplay

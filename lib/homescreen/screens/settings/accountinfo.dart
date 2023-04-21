@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:moneymap/homescreen/screens/first_screen.dart';
 import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
+import 'package:moneymap/providers/firstscreen_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../bottom_nav/home_screen.dart';
 
@@ -46,9 +46,8 @@ class AccountInfo extends StatelessWidget {
                   G().sBox(h: 15),
                   ElevatedButton(
                       onPressed: () {
-                        Hive.box('onboarding_check')
-                            .put('userName', _userNameInSetting.text);
-                        const FirstScreen();
+                        Provider.of<FirstScreenProvider>(context, listen: false)
+                            .changeName(_userNameInSetting.text);
                         Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(builder: (context) => HomeScreen()),
                           (Route<dynamic> route) => false,

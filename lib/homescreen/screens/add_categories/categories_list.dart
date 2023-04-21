@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:moneymap/homescreen/screens/add_categories/db_categories/categories_db_functions.dart';
+import 'package:moneymap/providers/category_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'db_categories/categories_db_model.dart';
 
-class CategoriesList extends StatefulWidget {
+class CategoriesList extends StatelessWidget {
   final bool type;
 
-  const CategoriesList({
+  CategoriesList({
     super.key,
     required this.type,
   });
 
-  @override
-  State<CategoriesList> createState() => _CategoriesListState();
-}
-
-class _CategoriesListState extends State<CategoriesList> {
   final TextEditingController _categoryController = TextEditingController();
 
   // @override
@@ -46,26 +42,32 @@ class _CategoriesListState extends State<CategoriesList> {
                     style: TextStyle(fontSize: 20, color: Colors.purple),
                   ),
                 ),
-                ValueListenableBuilder(
-                  valueListenable: valuelistanableList(),
-                  builder: ((context, List<CategoryModel> newInList, child_) {
+                Consumer<CategoryProvider>(
+                  builder: ((context, providerModel, child_) {
+                    final newList = type
+                        ? providerModel.dropDownIncomeCategories
+                        : providerModel.dropDownExpenseCategories;
                     return ListView.builder(
                       shrinkWrap: true,
-                      itemCount: newInList.length,
+                      itemCount: newList.length,
                       itemBuilder: (context, index) {
                         return Card(
                           child: ListTile(
                             title: Text(
-                              newInList[index].catName,
+                              newList[index].catName,
                               style: const TextStyle(fontSize: 18),
                             ),
                             trailing: IconButton(
                                 onPressed: () {
-                                  deleteIncomeCategory(newInList[index].id);
+                                  providerModel
+                                      .deleteIncomeCategory(newList[index].id);
 
-                                  refreshUI();
+                                  providerModel.refreshUI();
                                 },
-                                icon: const Icon(Icons.delete)),
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                )),
                           ),
                         );
                       },
@@ -98,9 +100,11 @@ class _CategoriesListState extends State<CategoriesList> {
                   final incomeCategory = CategoryModel(
                       id: DateTime.now().toString(),
                       catName: _categoryController.text,
-                      type: widget.type);
-                  insertCategory(incomeCategory);
-                  refreshUI();
+                      type: type);
+                  Provider.of<CategoryProvider>(context, listen: false)
+                      .insertCategory(incomeCategory);
+                  Provider.of<CategoryProvider>(context, listen: false)
+                      .refreshUI();
 
                   Navigator.pop(context);
                 },
@@ -110,11 +114,11 @@ class _CategoriesListState extends State<CategoriesList> {
         });
   }
 
-  ValueNotifier<List<CategoryModel>> valuelistanableList() {
-    if (widget.type == true) {
-      return dropDownIncomeCategories;
-    } else {
-      return dropDownExpenseCategories;
-    }
-  }
+  // ValueNotifier<List<CategoryModel>> valuelistanableList() {
+  //   if (type == true) {
+  //     return dropDownIncomeCategories;
+  //   } else {
+  //     return dropDownExpenseCategories;
+  //   }
+  // }
 }

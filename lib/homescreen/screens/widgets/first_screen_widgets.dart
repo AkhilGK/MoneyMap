@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transaction_model.dart';
-import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
 import 'package:moneymap/homescreen/screens/edit_and_delete_Screen/edit_delete.dart';
+import 'package:moneymap/providers/transaction_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'empty_message.dart';
 
@@ -13,21 +14,22 @@ class FirstScreenWidget {
   Widget listtileRecent(ctx) {
     // ignore: prefer_const_constructors
 
-    return ValueListenableBuilder(
-      valueListenable: transactionNotifier,
-      builder: (context, List<TransactionModel> newList, _) {
+    return Consumer<TransactionProvider>(
+      // valueListenable: transactionNotifier,
+      builder: (context, providerModel, _) {
+        final newList = providerModel.transactionNotifier;
         return newList.isEmpty
             ? const EmptyMesssage()
             : ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: recentCount(),
+                itemCount: recentCount(context),
                 itemBuilder: (context, index) {
                   TransactionModel value = newList[index];
                   return Card(
                     elevation: 1,
                     child: ListTile(
-                      onLongPress: () => deleteTransaction(value.id!),
+                      // onLongPress: () => deleteTransaction(value.id!),
                       onTap: () {
                         Navigator.of(ctx).push(MaterialPageRoute(
                           builder: (context) {
@@ -78,9 +80,14 @@ class FirstScreenWidget {
     );
   }
 
-  int recentCount() {
-    if (transactionNotifier.value.length < 5) {
-      return transactionNotifier.value.length;
+  int recentCount(BuildContext ctx) {
+    if (Provider.of<TransactionProvider>(ctx, listen: false)
+            .transactionNotifier
+            .length <
+        5) {
+      return Provider.of<TransactionProvider>(ctx, listen: false)
+          .transactionNotifier
+          .length;
     } else {
       return 5;
     }

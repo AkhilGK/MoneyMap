@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
-import 'package:moneymap/homescreen/screens/add_categories/db_categories/categories_db_functions.dart';
+import 'package:moneymap/providers/add_transaction_provider.dart';
+import 'package:moneymap/providers/category_provider.dart';
+import 'package:moneymap/providers/transaction_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../add_categories/categories_list.dart';
 import '../bottom_nav/home_screen.dart';
+import '../widgets/global_widgets.dart';
 import 'db_transactions/transaction_model.dart';
 
 class AddExpense extends StatefulWidget {
@@ -15,8 +19,8 @@ class AddExpense extends StatefulWidget {
 }
 
 class _AddExpenseState extends State<AddExpense> {
-  TextEditingController dateinput = TextEditingController();
-  String _selectedCategory = "";
+  // TextEditingController dateinput = TextEditingController();
+  // String _selectedCategory = "";
   DateTime dateSelected = DateTime.now();
   TextEditingController amountController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -25,6 +29,8 @@ class _AddExpenseState extends State<AddExpense> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    context.read<AddtransactionProvider>().dateInExpense('');
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
@@ -34,8 +40,9 @@ class _AddExpenseState extends State<AddExpense> {
             children: [
               sboxex(h: 20),
               Row(
-                children: const [
-                  Text("Amount & Payments"),
+                children: [
+                  G().textOfMap(
+                      text: "Amount & Payments", size: 20, color: Colors.purple)
                 ],
               ),
               sboxex(h: 15),
@@ -74,15 +81,16 @@ class _AddExpenseState extends State<AddExpense> {
                 },
               ),
               sboxex(h: 15),
-              ValueListenableBuilder(
-                valueListenable: dropDownExpenseCategories,
-                builder: (context, categoryList, child) {
+              Consumer<CategoryProvider>(
+                // valueListenable: dropDownExpenseCategories,
+                builder: (context, providerModel, child) {
+                  final expList = providerModel.dropDownExpenseCategories;
                   return DropdownButtonFormField(
                     decoration: const InputDecoration(
                         label: Text("Category"),
                         // hintText: "Select a category",
                         border: OutlineInputBorder()),
-                    items: categoryList
+                    items: expList
                         .map((data) => DropdownMenuItem(
                               value: data,
                               child: Center(child: Text(data.catName)),
@@ -90,10 +98,13 @@ class _AddExpenseState extends State<AddExpense> {
                         .toList(),
                     // value: _selectedCategory,
                     onChanged: (newvalue) {
-                      setState(() {
-                        _selectedCategory =
-                            newvalue!.catName; //on the income page
-                      });
+                      Provider.of<AddtransactionProvider>(context,
+                              listen: false)
+                          .incomeCategoryFun(newvalue!.catName);
+                      // setState(() {
+                      //   _selectedCategory =
+                      //       newvalue!.catName; //on the income page
+                      // });
                     },
                     validator: (value) {
                       if (value == null || value.catName.isEmpty) {
@@ -113,8 +124,7 @@ class _AddExpenseState extends State<AddExpense> {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) =>
-                                const CategoriesList(type: false),
+                            builder: (context) => CategoriesList(type: false),
                           ),
                         );
                       },
@@ -124,7 +134,9 @@ class _AddExpenseState extends State<AddExpense> {
                 ],
               ),
               TextFormField(
-                controller: dateinput, //editing controller of this TextField
+                controller:
+                    context.watch<AddtransactionProvider>().dateinputExpense,
+                //editing controller of this TextField
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     icon: Icon(Icons.calendar_today), //icon of text field
@@ -152,10 +164,13 @@ class _AddExpenseState extends State<AddExpense> {
 
                     //you can implement different kind of Date Format here according to your requirement
 
-                    setState(() {
-                      dateinput.text =
-                          formattedDate; //set output date to TextField value.
-                    });
+                    // ignore: use_build_context_synchronously
+                    Provider.of<AddtransactionProvider>(context, listen: false)
+                        .dateInExpense(formattedDate);
+                    // setState(() {
+                    //   dateinput.text =
+                    //       formattedDate; //set output date to TextField value.
+                    // });
                   }
                 },
                 validator: (value) {
@@ -183,10 +198,13 @@ class _AddExpenseState extends State<AddExpense> {
                           isIncome: false,
                           amount: double.parse(amountController.text),
                           name: nameController.text,
-                          categoryName: _selectedCategory,
+                          categoryName: context
+                              .read<AddtransactionProvider>()
+                              .selectedIncomeCategory,
                           date: dateSelected,
                           id: DateTime.now().microsecondsSinceEpoch.toString());
-                      insertTransactions(value);
+                      Provider.of<TransactionProvider>(context, listen: false)
+                          .insertTransactions(value);
                       Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(builder: (context) => HomeScreen()),
                         (Route<dynamic> route) => false,

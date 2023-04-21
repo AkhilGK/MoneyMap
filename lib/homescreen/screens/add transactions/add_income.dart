@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transaction_model.dart';
-import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
 import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
-
+import 'package:moneymap/providers/add_transaction_provider.dart';
+import 'package:moneymap/providers/category_provider.dart';
+import 'package:moneymap/providers/transaction_provider.dart';
+import 'package:provider/provider.dart';
 import '../add_categories/categories_list.dart';
-import '../add_categories/db_categories/categories_db_functions.dart';
 import '../bottom_nav/home_screen.dart';
 
 class AddIncome extends StatefulWidget {
@@ -16,8 +17,9 @@ class AddIncome extends StatefulWidget {
 }
 
 class _AddIncomeState extends State<AddIncome> {
-  String _selectedCategory = "";
-  TextEditingController dateinput = TextEditingController();
+  // String _selectedCategory = "";
+
+  // TextEditingController dateinput = TextEditingController();
   DateTime dateSelected = DateTime.now();
   TextEditingController amountController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -27,6 +29,7 @@ class _AddIncomeState extends State<AddIncome> {
   final _formKey = GlobalKey<FormState>(); //for form validation
   @override
   Widget build(BuildContext context) {
+    context.read<AddtransactionProvider>().dateInIncome('');
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
@@ -86,25 +89,29 @@ class _AddIncomeState extends State<AddIncome> {
 
               //to a select category
 
-              ValueListenableBuilder(
-                valueListenable: dropDownIncomeCategories,
-                builder: (context, dropDownIncomeCategories, child) {
+              Consumer<CategoryProvider>(
+                // valueListenable: dropDownIncomeCategories,
+                builder: (context, providerModel, child) {
+                  final incList = providerModel.dropDownIncomeCategories;
                   return DropdownButtonFormField(
                     decoration: const InputDecoration(
                       label: Text("Category"),
                       hintText: "Select a category",
                       border: OutlineInputBorder(),
                     ),
-                    items: dropDownIncomeCategories
+                    items: incList
                         .map((cat) => DropdownMenuItem(
                               value: cat,
                               child: Center(child: Text(cat.catName)),
                             ))
                         .toList(),
                     onChanged: (newvalue) {
-                      setState(() {
-                        _selectedCategory = newvalue!.catName;
-                      });
+                      // setState(() {
+                      //   _selectedCategory = newvalue!.catName;
+                      // });
+                      Provider.of<AddtransactionProvider>(context,
+                              listen: false)
+                          .incomeCategoryFun(newvalue!.catName);
                     },
                     validator: (value) {
                       if (value == null || value.catName.isEmpty) {
@@ -124,8 +131,7 @@ class _AddIncomeState extends State<AddIncome> {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) =>
-                                const CategoriesList(type: true),
+                            builder: (context) => CategoriesList(type: true),
                           ),
                         );
                       },
@@ -138,7 +144,9 @@ class _AddIncomeState extends State<AddIncome> {
               //date And ime
 
               TextFormField(
-                controller: dateinput, //editing controller of this TextField
+                controller: context
+                    .read<AddtransactionProvider>()
+                    .dateinputIncome, //editing controller of this TextField
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     icon: Icon(Icons.calendar_today), //icon of text field
@@ -164,11 +172,13 @@ class _AddIncomeState extends State<AddIncome> {
                     // print(
                     //     formattedDate); //formatted date output using intl package =>  16-03-2022
                     //you can implement different kind of Date Format here according to your requirement
-
-                    setState(() {
-                      dateinput.text =
-                          formattedDate; //set output date to TextField value.
-                    });
+                    // ignore: use_build_context_synchronously
+                    Provider.of<AddtransactionProvider>(context, listen: false)
+                        .dateInIncome(formattedDate);
+                    // setState(() {
+                    //   dateinput.text =
+                    //       formattedDate; //set output date to TextField value.
+                    // });
                   } //else {
                   //   print("Date is not selected");
                   // }
@@ -198,10 +208,13 @@ class _AddIncomeState extends State<AddIncome> {
                           isIncome: true, //truebecouse it is income
                           amount: double.parse(amountController.text),
                           name: nameController.text,
-                          categoryName: _selectedCategory,
+                          categoryName: context
+                              .read<AddtransactionProvider>()
+                              .selectedIncomeCategory,
                           date: dateSelected,
                           id: DateTime.now().microsecondsSinceEpoch.toString());
-                      insertTransactions(value);
+                      Provider.of<TransactionProvider>(context, listen: false)
+                          .insertTransactions(value);
                       Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(builder: (context) => HomeScreen()),
                         (Route<dynamic> route) => false,

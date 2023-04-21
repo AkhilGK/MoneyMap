@@ -2,9 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
 import 'package:moneymap/homescreen/screens/search/search_functions.dart';
 import 'package:moneymap/homescreen/screens/widgets/empty_message.dart';
+import 'package:moneymap/providers/search_provider.dart';
+import 'package:provider/provider.dart';
+import '../../../providers/transaction_provider.dart';
 import '../add transactions/db_transactions/transaction_model.dart';
 import '../edit_and_delete_Screen/edit_delete.dart';
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
@@ -18,24 +20,32 @@ class SearchAndView extends StatefulWidget {
 
 class _SearchAndViewState extends State<SearchAndView> {
   List<String> dropItems = ['All transactions', 'Income', 'Expense'];
-  ValueNotifier<String> dropdownValue =
-      ValueNotifier('All transactions'); //to select the type
+  // ValueNotifier<String> dropdownValue =
+  //     ValueNotifier('All transactions'); //to select the type
+
   TextEditingController searchController = TextEditingController();
-  List<TransactionModel> listToDisplay =
-      transactionNotifier.value; //take all value from main list
-  ValueNotifier<List<TransactionModel>> outputList = ValueNotifier([]);
-  String query = '';
+  //take all value from main list
+  // String query = '';
   // Variables for date range
-  DateTime? startDate;
-  DateTime? endDate;
+  // DateTime? startDate;
+  // DateTime? endDate;
   @override
   void initState() {
-    outputList.value = listToDisplay;
     super.initState();
+    context.read<SearchProvider>().dropdownValue = 'All transactions';
+    context.read<SearchProvider>().startDate = null;
+    context.read<SearchProvider>().endDate = null;
   }
 
   @override
   Widget build(BuildContext context) {
+    List<TransactionModel> listToDisplay =
+        Provider.of<TransactionProvider>(context, listen: false)
+            .transactionNotifier;
+    ValueNotifier<List<TransactionModel>> outputList = ValueNotifier([]);
+
+    outputList.value = listToDisplay;
+
     return Scaffold(
       body: SafeArea(
           child: Padding(
@@ -54,9 +64,8 @@ class _SearchAndViewState extends State<SearchAndView> {
                           borderRadius: BorderRadius.circular(15)),
                       filled: true,
                       fillColor: Colors.white54),
-                  onChanged: (value) => setState(() {
-                    query = value;
-                  }),
+                  onChanged: (value) =>
+                      context.read<SearchProvider>().queryfun(value),
                 ),
               ),
               Container(
@@ -67,7 +76,7 @@ class _SearchAndViewState extends State<SearchAndView> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: DropdownButton(
-                    value: dropdownValue.value,
+                    value: Provider.of<SearchProvider>(context).dropdownValue,
                     items: dropItems.map((items) {
                       return DropdownMenuItem(
                         value: items,
@@ -75,10 +84,8 @@ class _SearchAndViewState extends State<SearchAndView> {
                       );
                     }).toList(),
                     onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownValue.value = newValue!;
-                        dropdownValue.notifyListeners();
-                      });
+                      Provider.of<SearchProvider>(context, listen: false)
+                          .dropDownfun(newValue!);
                     },
                   ),
                 ),
@@ -96,58 +103,59 @@ class _SearchAndViewState extends State<SearchAndView> {
                     dismissible: true,
                     minimumDate: DateTime(2010),
                     maximumDate: DateTime.now(),
-                    endDate: endDate,
-                    startDate: startDate,
+                    endDate: Provider.of<SearchProvider>(context, listen: false)
+                        .endDate,
+                    startDate:
+                        Provider.of<SearchProvider>(context, listen: false)
+                            .startDate,
                     onApplyClick: (start, end) {
-                      setState(() {
-                        endDate = end;
-                        startDate = start;
-                      });
+                      Provider.of<SearchProvider>(context, listen: false)
+                          .customDateApply(start, end);
                     },
                     onCancelClick: () {
-                      setState(() {
-                        endDate = null;
-                        startDate = null;
-                      });
+                      Provider.of<SearchProvider>(context, listen: false)
+                          .customDateCancel();
                     },
                   );
                 },
-                child: startDate == null
+                child: context.watch<SearchProvider>().startDate == null
                     ? const Icon(
                         Icons.calendar_today_outlined,
                         color: Colors.grey,
                       )
                     : Text(
                         style: const TextStyle(color: Colors.grey),
-                        '${startDate != null ? DateFormat("dd/MMM/yyyy").format(startDate!) : '-'} - ${endDate != null ? DateFormat("dd/MMM/yyyy").format(endDate!) : '-'}',
+                        '${context.watch<SearchProvider>().startDate != null ? DateFormat("dd/MMM/yyyy").format(context.watch<SearchProvider>().startDate!) : '-'} - ${context.watch<SearchProvider>().endDate != null ? DateFormat("dd/MMM/yyyy").format(context.watch<SearchProvider>().endDate!) : '-'}',
                       ),
               ),
-              transactionNotifier.value.isEmpty
+              Provider.of<TransactionProvider>(context, listen: false)
+                      .transactionNotifier
+                      .isEmpty
                   ? const EmptyMesssage()
-                  : ValueListenableBuilder(
-                      valueListenable: dropdownValue,
-                      builder: (context, typeSelected, _) {
+                  : Consumer<SearchProvider>(
+                      // valueListenable: dropdownValue,
+                      builder: (context, providerModel, _) {
                         //without date range
 
                         return ValueListenableBuilder(
                           valueListenable: searchFunction(
-                              queryString: query,
-                              transactionType: typeSelected,
-                              startDate: startDate,
-                              endDate: endDate),
+                            queryString: context.read<SearchProvider>().query,
+                            transactionType: providerModel.dropdownValue!,
+                            startDate: context.read<SearchProvider>().startDate,
+                            endDate: context.read<SearchProvider>().endDate,
+                            ctx: context,
+                          ),
                           builder:
                               (context, List<TransactionModel> newList, _) {
                             return ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: showList.value.length,
+                              itemCount: newList.length,
                               itemBuilder: (context, index) {
                                 TransactionModel value = newList[index];
                                 return Card(
                                   elevation: 1,
                                   child: ListTile(
-                                    onLongPress: () =>
-                                        deleteTransaction(value.id!),
                                     onTap: () {
                                       Navigator.of(context)
                                           .push(MaterialPageRoute(

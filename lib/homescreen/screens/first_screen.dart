@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:moneymap/homescreen/screens/search/search_base.dart';
 import 'package:moneymap/homescreen/screens/widgets/first_screen_widgets.dart';
 import 'package:moneymap/homescreen/screens/widgets/flipcard.dart';
 import 'package:moneymap/homescreen/screens/widgets/global_widgets.dart';
+import 'package:moneymap/providers/firstscreen_provider.dart';
+import 'package:provider/provider.dart';
 import 'add transactions/add_transaction.dart';
 
-class FirstScreen extends StatefulWidget {
+class FirstScreen extends StatelessWidget {
   const FirstScreen({super.key});
-
-  @override
-  State<FirstScreen> createState() => _FirstScreenState();
-}
-
-class _FirstScreenState extends State<FirstScreen> {
-  final String userNameFromDB = Hive.box('onboarding_check').get('userName');
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +22,12 @@ class _FirstScreenState extends State<FirstScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  moneyMapText(
-                      text: 'Hi $userNameFromDB ,',
-                      size: 28,
-                      color: const Color.fromRGBO(177, 103, 190, 1),
-                      fontWeight: FontWeight.bold),
+                  Consumer<FirstScreenProvider>(
+                      builder: (context, providerModel, child) => moneyMapText(
+                          text: 'Hi ${providerModel.userNameFromDB},',
+                          size: 28,
+                          color: const Color.fromRGBO(177, 103, 190, 1),
+                          fontWeight: FontWeight.bold)),
                 ],
               ),
               Row(

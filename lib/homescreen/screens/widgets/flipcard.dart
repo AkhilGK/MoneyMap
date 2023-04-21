@@ -3,8 +3,8 @@
 
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
-import 'package:moneymap/homescreen/screens/add%20transactions/db_transactions/transactions_functions.dart';
-import '../add transactions/db_transactions/transaction_model.dart';
+import 'package:moneymap/providers/transaction_provider.dart';
+import 'package:provider/provider.dart';
 import 'first_screen_widgets.dart';
 
 class FirstFlipCard extends StatelessWidget {
@@ -14,10 +14,10 @@ class FirstFlipCard extends StatelessWidget {
   double savings = 0;
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: transactionNotifier,
-      builder: (context, List<TransactionModel> transList, _) {
-        totalExpense = 0;
+    return Consumer<TransactionProvider>(
+      // valueListenable: transactionNotifier,
+      builder: (context, providerModel, _) {
+        final transList = providerModel.transactionNotifier;
         totalIncome = 0;
         savings = 0;
         for (var tlist in transList) {
